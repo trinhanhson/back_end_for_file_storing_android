@@ -68,7 +68,7 @@ public class FileMaker {
             // Duyệt qua danh sách các đối tượng Resource và nén chúng thành file zip
             for (Map.Entry<String, List<Resource>> entry : multiValueMap.entrySet()) {
                 for (Resource resource : entry.getValue()) {
-                    ZipEntry zipEntry = new ZipEntry(entry.getKey() + "/" + resource.getFilename());
+                    ZipEntry zipEntry = new ZipEntry(resource.getFilename()); // đặt tên entry bằng tên file
                     zipOut.putNextEntry(zipEntry);
                     StreamUtils.copy(resource.getInputStream(), zipOut);
                     zipOut.closeEntry();
@@ -102,5 +102,5 @@ public class FileMaker {
 
         return listOfFolders;
     }
-    
+
 }
