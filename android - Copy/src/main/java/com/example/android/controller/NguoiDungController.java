@@ -5,6 +5,7 @@
 package com.example.android.controller;
 
 import com.example.android.Repository.NguoiDungRepo;
+import com.example.android.Repository.TepRepo;
 import com.example.android.model.NguoiDung;
 import com.example.android.utility.FileMaker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class NguoiDungController {
 
     @Autowired
     private NguoiDungRepo nguoiDungRepo;
+    
+    @Autowired
+    private TepRepo tepRepo;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam("username") String username,
@@ -65,8 +69,10 @@ public class NguoiDungController {
     public ResponseEntity<?> deleteUser(@RequestParam("username") String username){
         
         if (!nguoiDungRepo.existsByTenDangNhap(username)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ten dang nhap da ton tai.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Ten dang nhap khong ton tai.");
         }
+        
+        tepRepo.deleteByNguoiDung(username);
         
         nguoiDungRepo.deleteByTenDangNhap(username);
         

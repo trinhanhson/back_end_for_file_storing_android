@@ -5,6 +5,7 @@
 package com.example.android.Repository;
 
 import com.example.android.model.NguoiDung;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +23,6 @@ public interface NguoiDungRepo extends JpaRepository<NguoiDung, Integer> {
 
     boolean existsByTenDangNhap(String tenDangNhap);
     
+    @Transactional
     Integer deleteByTenDangNhap(String tenDangNhap);
 }
