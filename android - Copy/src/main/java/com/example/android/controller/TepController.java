@@ -42,12 +42,12 @@ public class TepController {
 
         String fileName = file.getOriginalFilename();
 
-        File newFile = new File("D:/project java/android/user/" + path + "/" + fileName);
+        File newFile = new File("D:/back_end_for_file_storing_android/android - Copy/user/" + path + "/" + fileName);
 
         String mimetype = Files.probeContentType(newFile.toPath());
         Tep tep = new Tep();
         tep.setTen(fileName);
-        tep.setDuongDan("D:/project java/android/user/" + path + "/" + fileName);
+        tep.setDuongDan("D:/back_end_for_file_storing_android/android - Copy/user/" + path + "/" + fileName);
         switch (mimetype.split("/")[0]) {
             case "image" ->
                 tep.setLoai("image");
@@ -71,7 +71,7 @@ public class TepController {
 
     @GetMapping("/downloadFile")
     public ResponseEntity<?> downloadFile(@RequestParam("path") String path) {
-        String fullPath = "D:/project java/android/user/" + path;
+        String fullPath = "D:/back_end_for_file_storing_android/android - Copy/user/" + path;
 
         File directory = new File(fullPath);
 

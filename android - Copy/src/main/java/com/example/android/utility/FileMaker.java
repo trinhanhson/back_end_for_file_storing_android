@@ -34,7 +34,7 @@ public class FileMaker {
     private TepRepo tepRepo;
 
     public static boolean MakeFolder(String path, String name) {
-        File folder = new File("D:/project java/android/user/" + path + "/" + name);
+        File folder = new File("D:/back_end_for_file_storing_android/android - Copy/user/" + path + "/" + name);
         if (folder.exists()) {
             return false;
         }
@@ -43,12 +43,12 @@ public class FileMaker {
     }
 
     public static boolean MakeFile(String path, String name) throws IOException {
-        File file = new File("D:/project java/android/user/" + path + "/" + name);
+        File file = new File("D:/back_end_for_file_storing_android/android - Copy/user/" + path + "/" + name);
         return file.createNewFile();
     }
 
     public static boolean DeleteFileAndFolder(String path) {
-        File file = new File("D:/project java/android/user/" + path);
+        File file = new File("D:/back_end_for_file_storing_android/android - Copy/user/" + path);
 
         if (!file.exists()) {
             return false;
@@ -86,7 +86,7 @@ public class FileMaker {
     }
 
     public static List<String> getAllFolder(String path) {
-        String fullPath = "D:/project java/android/user/" + path;
+        String fullPath = "D:/back_end_for_file_storing_android/android - Copy/user/" + path;
 
         File directory = new File(fullPath);
 
