@@ -5,24 +5,20 @@
 package com.example.android.utility;
 
 import com.example.android.Repository.TepRepo;
-import com.example.android.model.Tep;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.util.FileSystemUtils;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  *
@@ -101,6 +97,22 @@ public class FileMaker {
         }
 
         return listOfFolders;
+    }
+
+    public static List<String> getAll(String path) {
+        String fullPath = "D:/back_end_for_file_storing_android/android - Copy/user/" + path;
+
+        File directory = new File(fullPath);
+
+        // Lấy danh sách các file trong thư mục
+        File[] files = directory.listFiles();
+        List<String> listOfAll = new ArrayList<>();
+
+        for (File file : files) {
+            listOfAll.add(path + "/" + file.getName());
+        }
+
+        return listOfAll;
     }
 
 }

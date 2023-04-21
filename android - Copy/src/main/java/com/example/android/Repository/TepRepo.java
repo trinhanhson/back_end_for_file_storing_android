@@ -19,4 +19,11 @@ public interface TepRepo extends JpaRepository<Tep, Integer>{
     
     @Transactional
     Integer deleteByNguoiDung(String nguoiDung);
+    
+    Tep findByTenAndNguoiDung(String ten,String nguoiDung);
+    
+    @Transactional
+    Integer deleteByTenAndNguoiDung(String ten,String nguoiDung);
+    
+    boolean existsByTenAndNguoiDung(String ten,String nguoiDung);
 }

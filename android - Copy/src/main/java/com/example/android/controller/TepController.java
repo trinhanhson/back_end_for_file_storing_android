@@ -42,6 +42,10 @@ public class TepController {
 
         String fileName = file.getOriginalFilename();
 
+        if (tepRepo.existsByTenAndNguoiDung(path.split("/")[0], fileName)) {
+            fileName += "1";
+        }
+
         File newFile = new File("D:/back_end_for_file_storing_android/android - Copy/user/" + path + "/" + fileName);
 
         String mimetype = Files.probeContentType(newFile.toPath());
@@ -118,7 +122,7 @@ public class TepController {
     }
 
     @GetMapping("/downloadFileOfType")
-    public ResponseEntity<?> downloadImage(@RequestParam("username") String username, @RequestParam("loai") String loai) {
+    public ResponseEntity<?> downloadFileOfType(@RequestParam("username") String username, @RequestParam("loai") String loai) {
         List<Tep> listTep = tepRepo.findByNguoiDungAndLoai(username, loai);
 
         // Tạo đối tượng MultiValueMap để lưu trữ danh sách các đối tượng Resource
@@ -138,6 +142,46 @@ public class TepController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(zipFile);
     }
-    
-    
+
+    //Newcode
+    @GetMapping("/downloadNameAll")
+    public ResponseEntity<?> downloadNameAll(@RequestParam("path") String path) {
+        List<String> listFolder = FileMaker.getAll(path);
+        return ResponseEntity.ok(listFolder);
+    }
+
+    @GetMapping("/downloadOneFile")
+    public ResponseEntity<?> downloadOneFile(@RequestParam("fileName") String fileName, @RequestParam("username") String username) {
+
+        Tep tep = tepRepo.findByTenAndNguoiDung(fileName, username);
+
+        File file = new File(tep.getDuongDan());
+
+        Resource resource = new FileSystemResource(file);
+
+        // Trả về đối tượng ResponseEntity chứa tệp tin và các đầu mục HTTP cần thiết
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
+    }
+
+    @PostMapping("/deleteFile")
+    public ResponseEntity<?> deleteFile(@RequestParam("fileName") String fileName, @RequestParam("username") String username) {
+        Tep tep = tepRepo.findByTenAndNguoiDung(fileName, username);
+
+        FileMaker.DeleteFileAndFolder(tep.getDuongDan());
+
+        tepRepo.deleteByTenAndNguoiDung(fileName, username);
+
+        return ResponseEntity.ok("Xoa file thanh cong");
+    }
+
+    @GetMapping("/downloadNameFileOfType")
+    public ResponseEntity<?> downloadNameFileOfType(@RequestParam("username") String username, @RequestParam("loai") String loai){
+        List<Tep> listTep = tepRepo.findByNguoiDungAndLoai(username, loai);
+        
+        return ResponseEntity.ok(listTep);
+    }
 }
