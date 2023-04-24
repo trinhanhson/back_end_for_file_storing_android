@@ -19,6 +19,7 @@ import org.springframework.util.StreamUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 
 /**
  *
@@ -43,7 +44,7 @@ public class FileMaker {
         return file.createNewFile();
     }
 
-    public static boolean DeleteFileAndFolder(String path) {
+    public static boolean DeleteFolder(String path) {
         File file = new File("D:/back_end_for_file_storing_android/android - Copy/user/" + path);
 
         if (!file.exists()) {
@@ -51,6 +52,18 @@ public class FileMaker {
         }
 
         FileSystemUtils.deleteRecursively(file);
+
+        return true;
+    }
+
+    public static boolean DeleteFile(String path) throws IOException {
+        File file = new File(path);
+
+        if (!file.exists()) {
+            return false;
+        }
+
+        FileUtils.forceDelete(file);
 
         return true;
     }
@@ -109,7 +122,7 @@ public class FileMaker {
         List<String> listOfAll = new ArrayList<>();
 
         for (File file : files) {
-            listOfAll.add(path + "/" + file.getName());
+            listOfAll.add(file.getName());
         }
 
         return listOfAll;

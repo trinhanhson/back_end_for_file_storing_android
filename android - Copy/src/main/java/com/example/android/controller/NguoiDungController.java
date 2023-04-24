@@ -76,7 +76,7 @@ public class NguoiDungController {
         
         nguoiDungRepo.deleteByTenDangNhap(username);
         
-        FileMaker.DeleteFileAndFolder(username);
+        FileMaker.DeleteFolder(username);
         
         return ResponseEntity.ok("Xoa thanh cong");
     }

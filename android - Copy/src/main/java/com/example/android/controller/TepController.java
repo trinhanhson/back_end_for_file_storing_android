@@ -10,6 +10,7 @@ import com.example.android.utility.FileMaker;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,12 @@ public class TepController {
 
         File newFile = new File("D:/back_end_for_file_storing_android/android - Copy/user/" + path + "/" + fileName);
 
+        try {
+            file.transferTo(newFile);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
         String mimetype = Files.probeContentType(newFile.toPath());
         Tep tep = new Tep();
         tep.setTen(fileName);
@@ -63,12 +70,6 @@ public class TepController {
         tep.setNguoiDung(path.split("/")[0]);
 
         tepRepo.save(tep);
-
-        try {
-            file.transferTo(newFile);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
 
         return ResponseEntity.ok("Tep da tai len thanh cong.");
     }
@@ -168,10 +169,11 @@ public class TepController {
     }
 
     @PostMapping("/deleteFile")
-    public ResponseEntity<?> deleteFile(@RequestParam("fileName") String fileName, @RequestParam("username") String username) {
+    public ResponseEntity<?> deleteFile(@RequestParam("fileName") String fileName, @RequestParam("username") String username) throws IOException {
         Tep tep = tepRepo.findByTenAndNguoiDung(fileName, username);
 
-        FileMaker.DeleteFileAndFolder(tep.getDuongDan());
+        if(FileMaker.DeleteFile(tep.getDuongDan()))
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
         tepRepo.deleteByTenAndNguoiDung(fileName, username);
 
@@ -179,9 +181,13 @@ public class TepController {
     }
 
     @GetMapping("/downloadNameFileOfType")
-    public ResponseEntity<?> downloadNameFileOfType(@RequestParam("username") String username, @RequestParam("loai") String loai){
+    public ResponseEntity<?> downloadNameFileOfType(@RequestParam("username") String username, @RequestParam("loai") String loai) {
         List<Tep> listTep = tepRepo.findByNguoiDungAndLoai(username, loai);
-        
-        return ResponseEntity.ok(listTep);
+        List<String> listTenTepList=new ArrayList<>();
+        for(Tep tep: listTep){
+            listTenTepList.add(tep.getTen());
+        }
+
+        return ResponseEntity.ok(listTenTepList);
     }
 }
