@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PICKFILE_REQUEST_CODE = 100;
 
+    private static String beURL="http://192.168.205.250:8080/";
+
     SharedPreferences sharedPref;
 
     Button testDangNhapBtn, testDangKyBtn, testTaiFileBtn, testTaiFileVeBtn, testTaiCacTenBtn, testXoaFileBtn;
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void dangNhap() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.55.111:8080/")
+                .baseUrl(beURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void dangKy() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.55.111:8080/")
+                .baseUrl(beURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -201,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("Name", "1");
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.55.111:8080/")
+                .baseUrl(beURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -234,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void taiFileVe() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.55.111:8080/")
+                .baseUrl(beURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -303,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void taiCacTen() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.55.111:8080/")
+                .baseUrl(beURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -334,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void xoaFile(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.55.111:8080/")
+                .baseUrl(beURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

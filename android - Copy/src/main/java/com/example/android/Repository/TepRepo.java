@@ -8,6 +8,8 @@ import com.example.android.model.Tep;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -26,4 +28,7 @@ public interface TepRepo extends JpaRepository<Tep, Integer>{
     Integer deleteByTenAndNguoiDung(String ten,String nguoiDung);
     
     boolean existsByTenAndNguoiDung(String ten,String nguoiDung);
+    
+    @Query("SELECT tep FROM Tep tep WHERE tep.duongDan LIKE '%:duongDan'")
+    List<Tep> findByLikeDuongDan(@Param("duongDang") String duongDan);
 }

@@ -37,17 +37,19 @@ public class TepController {
 
     @Autowired
     private TepRepo tepRepo;
+    
+    private String parentPath = "D:/back_end_for_file_storing_android/android - Copy/user/";
 
     @PostMapping("/uploadFile")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("path") String path) throws IOException {
 
         String fileName = file.getOriginalFilename();
 
-        if (tepRepo.existsByTenAndNguoiDung(path.split("/")[0], fileName)) {
-            fileName += "1";
-        }
+//        if (tepRepo.existsByTenAndNguoiDung(path.split("/")[0], fileName)) {
+//            fileName += "1";
+//        }
 
-        File newFile = new File("D:/back_end_for_file_storing_android/android - Copy/user/" + path + "/" + fileName);
+        File newFile = new File(parentPath + path + "/" + fileName);
 
         try {
             file.transferTo(newFile);
@@ -58,7 +60,7 @@ public class TepController {
         String mimetype = Files.probeContentType(newFile.toPath());
         Tep tep = new Tep();
         tep.setTen(fileName);
-        tep.setDuongDan("D:/back_end_for_file_storing_android/android - Copy/user/" + path + "/" + fileName);
+        tep.setDuongDan( path + "/" + fileName);
         switch (mimetype.split("/")[0]) {
             case "image" ->
                 tep.setLoai("image");
@@ -76,7 +78,7 @@ public class TepController {
 
     @GetMapping("/downloadFile")
     public ResponseEntity<?> downloadFile(@RequestParam("path") String path) {
-        String fullPath = "D:/back_end_for_file_storing_android/android - Copy/user/" + path;
+        String fullPath = parentPath + path;
 
         File directory = new File(fullPath);
 
@@ -112,15 +114,23 @@ public class TepController {
         if (FileMaker.MakeFolder(path, folder)) {
             return ResponseEntity.ok("Thu muc da duoc tao.");
         }
+        
+        Tep tep = new Tep();
+        tep.setTen(folder);
+        tep.setDuongDan(path + "/" + folder);
+        tep.setLoai("thu muc");
+        tep.setNguoiDung(path.split("/")[0]);
+
+        tepRepo.save(tep);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @GetMapping("/downloadFolder")
-    public ResponseEntity<?> downloadFolder(@RequestParam("path") String path) {
-        List<String> listFolder = FileMaker.getAllFolder(path);
-        return ResponseEntity.ok(listFolder);
-    }
+//    @GetMapping("/downloadFolder")
+//    public ResponseEntity<?> downloadFolder(@RequestParam("path") String path) {
+//        List<String> listFolder = FileMaker.getAllFolder(path);
+//        return ResponseEntity.ok(listFolder);
+//    }
 
     @GetMapping("/downloadFileOfType")
     public ResponseEntity<?> downloadFileOfType(@RequestParam("username") String username, @RequestParam("loai") String loai) {
@@ -147,8 +157,8 @@ public class TepController {
     //Newcode
     @GetMapping("/downloadNameAll")
     public ResponseEntity<?> downloadNameAll(@RequestParam("path") String path) {
-        List<String> listFolder = FileMaker.getAll(path);
-        return ResponseEntity.ok(listFolder);
+        List<Tep> listNameTep = tepRepo.findByLikeDuongDan(path);
+        return ResponseEntity.ok(listNameTep);
     }
 
     @GetMapping("/downloadOneFile")
@@ -183,11 +193,7 @@ public class TepController {
     @GetMapping("/downloadNameFileOfType")
     public ResponseEntity<?> downloadNameFileOfType(@RequestParam("username") String username, @RequestParam("loai") String loai) {
         List<Tep> listTep = tepRepo.findByNguoiDungAndLoai(username, loai);
-        List<String> listTenTepList=new ArrayList<>();
-        for(Tep tep: listTep){
-            listTenTepList.add(tep.getTen());
-        }
 
-        return ResponseEntity.ok(listTenTepList);
+        return ResponseEntity.ok(listTep);
     }
 }
