@@ -1,7 +1,6 @@
 package com.example.cloud.api;
 
 import com.example.cloud.model.NguoiDung;
-import com.example.cloud.model.Tep;
 
 import java.util.List;
 
@@ -17,14 +16,16 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 
-public interface MyAPI {
+public interface ApiCollection {
     @FormUrlEncoded
     @POST("login")
-    Call<NguoiDung> login(@Field("username") String username, @Field("password") String password);
+    Call<NguoiDung> login(@Field("username") String username,
+                          @Field("password") String password);
 
     @FormUrlEncoded
     @POST("signup")
-    Call<NguoiDung> signup(@Field("username") String username, @Field("password") String password);
+    Call<NguoiDung> signup(@Field("username") String username,
+                           @Field("password") String password);
 
     @Multipart
     @POST("uploadFile")
@@ -34,12 +35,15 @@ public interface MyAPI {
     );
 
     @GET("downloadOneFile")
-    Call<ResponseBody> downloadOneFile(@Query("fileName") String filename, @Query("username") String username);
+    Call<ResponseBody> downloadOneFile(@Query("fileName") String filename,
+                                       @Query("username") String username);
 
     @GET("downloadNameAll")
-    Call<List<Tep>> downloadNameAll(@Query("path") String path);
+    Call<List<String>> downloadNameAll(@Query("path") String path);
 
     @FormUrlEncoded
     @POST("deleteFile")
-    Call<ResponseBody> deleteFile(@Field("fileName") String fileName, @Field("username") String username);
+    Call<ResponseBody> deleteFile(@Field("fileName") String fileName,
+                                  @Field("username") String username);
+
 }

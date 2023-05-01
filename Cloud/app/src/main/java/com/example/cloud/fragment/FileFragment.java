@@ -1,4 +1,4 @@
-package com.example.cloud;
+package com.example.cloud.fragment;
 
 import android.os.Bundle;
 
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cloud.R;
 import com.example.cloud.adapter.TepAdapter;
 import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
@@ -18,7 +19,8 @@ import com.example.cloud.onclick.IOnClickItem;
 import java.util.ArrayList;
 
 
-public class VideoFragment extends Fragment {
+public class FileFragment extends Fragment {
+
     private ArrayList<Tep> listTep;
     private RecyclerView recyclerView;
     private TepAdapter tepAdapter;
@@ -27,15 +29,15 @@ public class VideoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_video, container, false);
+        View view = inflater.inflate(R.layout.fragment_file, container, false);
 
         initRecycleView(view);
 
         return view;
     }
 
-    private void initRecycleView(View view) {
-        recyclerView = view.findViewById(R.id.rcvDataVideo);
+    private void initRecycleView( View view) {
+        recyclerView = view.findViewById(R.id.rcvDataFile);
 
         listTep = new ArrayList<>();
         createTepList();
@@ -43,7 +45,6 @@ public class VideoFragment extends Fragment {
             @Override
             public void onClickItem(Tep tep) {
                 taiFile(tep);
-
             }
         });
         recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(),4));
@@ -51,8 +52,8 @@ public class VideoFragment extends Fragment {
     }
 
     private void createTepList() {
-        listTep.add(new Tep(1, "abv", "anhson/abv.png", "video", "anhson"));
-        listTep.add(new Tep(1, "abv", "anhson/abv.png", "video", "anhson"));
+        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
+        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
         listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
         listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
         listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));

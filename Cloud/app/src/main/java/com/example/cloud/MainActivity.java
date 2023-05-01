@@ -1,6 +1,5 @@
 package com.example.cloud;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +8,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cloud.databinding.ActivityMainBinding;
+import com.example.cloud.fragment.FileFragment;
+import com.example.cloud.fragment.FolderFragment;
+import com.example.cloud.fragment.ImageFragment;
+import com.example.cloud.fragment.VideoFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
