@@ -35,16 +35,14 @@ public class FolderFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentFolderBinding.inflate(inflater, container, false);
 
-        View view = binding.getRoot();
-
-        initRecycleView(inflater, container, view);
+        initRecycleView();
 
         return binding.getRoot();
 
     }
 
-    private void initRecycleView(LayoutInflater inflater, ViewGroup container, View view) {
-        recyclerView = view.findViewById(R.id.rcvDataFolder);
+    private void initRecycleView() {
+        recyclerView = binding.rcvDataFolder;
 
         listTep = new ArrayList<>();
         createTepList();
@@ -59,7 +57,6 @@ public class FolderFragment extends Fragment {
                 }
             }
         });
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setAdapter(tepAdapter);
     }
 

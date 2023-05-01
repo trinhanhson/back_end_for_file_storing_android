@@ -1,4 +1,4 @@
-package com.example.cloud;
+package com.example.cloud.activity;
 
 import android.os.Bundle;
 
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.cloud.R;
 import com.example.cloud.databinding.ActivityMainBinding;
 import com.example.cloud.fragment.FileFragment;
 import com.example.cloud.fragment.FolderFragment;

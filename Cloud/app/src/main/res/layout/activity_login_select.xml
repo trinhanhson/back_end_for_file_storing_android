@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LoginSelectActivity">
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Cloud"
+        android:textColor="#0273CD"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/login_txt_backgroud"
+        android:gravity="center"
+        android:ems="10"
+        android:hint="Đăng nhập"
+        android:textColor="@color/lavender"
+        android:textSize="16sp"
+        android:inputType="text"
+        android:padding="6dp"
+        android:textColorHint="#8A8989"
+        tools:layout_editor_absoluteX="123dp"
+        tools:layout_editor_absoluteY="147dp" />
+
+
+    <TextView
+        android:id="@+id/btnRegis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng kí"
+        android:textColor="#000000"
+        tools:layout_editor_absoluteX="182dp"
+        tools:layout_editor_absoluteY="315dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="11"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="OR"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="192dp"
+        tools:layout_editor_absoluteY="271dp" />
+
+    <TextView
+        android:id="@+id/line2"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="172dp"
+        android:layout_height="1dp"
+        android:background="#000000"
+        android:gravity="center_horizontal"
+        tools:layout_editor_absoluteX="234dp"
+        tools:layout_editor_absoluteY="284dp" />
+
+    <TextView
+        android:id="@+id/line1"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="172dp"
+        android:layout_height="1dp"
+        android:background="#000000"
+        android:gravity="center_horizontal"
+        android:padding="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="284dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
