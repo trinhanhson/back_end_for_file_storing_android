@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -165,7 +164,7 @@ public class TepController {
 
     @GetMapping("/downloadOneFile")
     public ResponseEntity<?> downloadOneFile(@RequestParam("path") String path) {
-        File file = new File(parentPath + "/" + path);
+        File file = new File(parentPath + path);
 
         Resource resource = new FileSystemResource(file);
 
@@ -179,9 +178,8 @@ public class TepController {
 
     @PostMapping("/deleteFile")
     public ResponseEntity<?> deleteFile(@RequestParam("path") String path) throws IOException {
-        File file = new File(parentPath + "/" + path);
 
-        if (FileMaker.DeleteFile(parentPath + "/" + path)) {
+        if (FileMaker.DeleteFile(parentPath + path)) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
@@ -208,6 +206,22 @@ public class TepController {
     @GetMapping("/video/{videoName}")
     public void getVideo(HttpServletResponse response, @PathVariable String videoName) throws IOException {
         File file = new File("D:/t1/" + videoName);
+        FileInputStream inputStream = new FileInputStream(file);
+        response.setContentType(Files.probeContentType(file.toPath()));
+        IOUtils.copy(inputStream, response.getOutputStream());
+    }
+    
+//    @GetMapping("/getFile/{filePath}")
+//    public void getFile(HttpServletResponse response, @PathVariable String filePath) throws IOException {
+//        File file = new File(parentPath + filePath);
+//        FileInputStream inputStream = new FileInputStream(file);
+//        response.setContentType(Files.probeContentType(file.toPath()));
+//        IOUtils.copy(inputStream, response.getOutputStream());
+//    }
+    
+    @GetMapping("/getFile")
+    public void getFile(HttpServletResponse response, @RequestParam("filePath")  String filePath) throws IOException {
+        File file = new File(parentPath + filePath);
         FileInputStream inputStream = new FileInputStream(file);
         response.setContentType(Files.probeContentType(file.toPath()));
         IOUtils.copy(inputStream, response.getOutputStream());
