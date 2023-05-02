@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        btnAccount = findViewById(R.id.account);
+        btnAccount = findViewById(R.id.btnAccount);
 
         btnAccount.setOnClickListener(new View.OnClickListener() {
 
