@@ -1,7 +1,6 @@
 package com.example.cloud.activity;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -15,12 +14,15 @@ import com.example.cloud.fragment.AccountFragment;
 import com.example.cloud.fragment.FileFragment;
 import com.example.cloud.fragment.FolderFragment;
 import com.example.cloud.fragment.ImageFragment;
+import com.example.cloud.fragment.SearchFragment;
 import com.example.cloud.fragment.VideoFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     private AppCompatImageView btnAccount;
+
+    private AppCompatImageView btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,23 +51,24 @@ public class MainActivity extends AppCompatActivity {
 
         btnAccount = findViewById(R.id.btnAccount);
 
-        btnAccount.setOnClickListener(new View.OnClickListener() {
+        btnAccount.setOnClickListener(v -> replaceFragmentOverlay(new AccountFragment()));
 
-            @Override
-            public void onClick(View v) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout_1, new AccountFragment());
-                fragmentTransaction.commit();
-            }
-        });
+        btnSearch = findViewById(R.id.btnSearch);
 
+        btnSearch.setOnClickListener(v -> replaceFragmentOverlay(new SearchFragment()));
     }
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
+    }
+
+    private void replaceFragmentOverlay(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_1, fragment);
         fragmentTransaction.commit();
     }
 }
