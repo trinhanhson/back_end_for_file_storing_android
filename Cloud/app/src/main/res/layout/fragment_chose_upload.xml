@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.ChoseUploadFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/card_bg"
+        android:padding="2dp"
+        android:src="@drawable/ic_baseline_clear_24" />
+
+    <Button
+        android:id="@+id/addFile"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:backgroundTint="@color/white"
+        android:drawableTop="@drawable/ic_file"
+        android:text="File"
+        android:textAllCaps="false"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/addMedia"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="40dp"
+        android:layout_toStartOf="@+id/addFile"
+        android:backgroundTint="@color/white"
+        android:drawableTop="@drawable/ic_image"
+        android:text="Media"
+        android:textAllCaps="false"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/addFolder"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="100dp"
+        android:layout_toEndOf="@+id/addFile"
+        android:backgroundTint="@color/white"
+        android:drawableTop="@drawable/ic_folder"
+        android:text="Folder"
+        android:textAllCaps="false"
+        android:textColor="@color/black" />
+
+    <RelativeLayout
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <EditText
+            android:id="@+id/editFolderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="16"
+            android:hint="Thư mục mới"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/huy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editFolderName"
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="@color/white"
+            android:text="Huỷ"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+
+            />
+
+        <Button
+            android:id="@+id/tao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/huy"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/huy"
+            android:backgroundTint="@color/white"
+            android:text="Tạo"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

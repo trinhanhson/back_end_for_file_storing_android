@@ -11,11 +11,13 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.cloud.R;
 import com.example.cloud.databinding.ActivityMainBinding;
 import com.example.cloud.fragment.AccountFragment;
+import com.example.cloud.fragment.ChoseUploadFragment;
 import com.example.cloud.fragment.FileFragment;
 import com.example.cloud.fragment.FolderFragment;
 import com.example.cloud.fragment.ImageFragment;
 import com.example.cloud.fragment.SearchFragment;
 import com.example.cloud.fragment.VideoFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatImageView btnAccount;
 
     private AppCompatImageView btnSearch;
+
+    private FloatingActionButton btnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
 
         btnSearch.setOnClickListener(v -> replaceFragmentOverlay(new SearchFragment()));
+
+        btnAdd=findViewById(R.id.add);
+
+        btnAdd.setOnClickListener(v -> replaceFragmentOverlay(new ChoseUploadFragment()));
     }
 
     private void replaceFragment(Fragment fragment) {
