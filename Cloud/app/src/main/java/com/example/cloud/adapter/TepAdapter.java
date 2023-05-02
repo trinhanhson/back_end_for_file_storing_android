@@ -1,7 +1,6 @@
 package com.example.cloud.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,25 +46,21 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
         Tep tep = mTep.get(position);
         holder.mFileName.setText(tep.getTen());
         int imageType = R.drawable.ic_folder;
-        if (tep.getLoai().equals("image")){
-           imageType=R.drawable.ic_image;
-        }
-        else if(tep.getLoai().equals("video")){
-            imageType=R.drawable.ic_video_lib;
-        }
-        else if(tep.getLoai().equals("khac")){
-            imageType=R.drawable.ic_file;
+        switch (tep.getLoai()) {
+            case "image":
+                imageType = R.drawable.ic_image;
+                break;
+            case "video":
+                imageType = R.drawable.ic_video_lib;
+                break;
+            case "khac":
+                imageType = R.drawable.ic_file;
+                break;
         }
 
         Glide.with(mContext).load(imageType).into(holder.mFileImage);
 
-        holder.layout.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                iOnClickItem.onClickItem(tep);
-            }
-        });
+        holder.layout.setOnClickListener(v -> iOnClickItem.onClickItem(tep));
     }
 
     @Override
@@ -80,9 +75,9 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mFileImage=(ImageView)itemView.findViewById(R.id.fileImage);
-            mFileName=(TextView)itemView.findViewById(R.id.fileName);
-            layout=(RelativeLayout) itemView.findViewById(R.id.file);
+            mFileImage= itemView.findViewById(R.id.fileImage);
+            mFileName= itemView.findViewById(R.id.fileName);
+            layout= itemView.findViewById(R.id.file);
         }
     }
 
