@@ -7,12 +7,15 @@ package com.example.android.controller;
 import com.example.android.Repository.TepRepo;
 import com.example.android.model.Tep;
 import com.example.android.utility.FileMaker;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +41,7 @@ public class TepController {
 
     @Autowired
     private TepRepo tepRepo;
-    
+
     private String parentPath = "D:/back_end_for_file_storing_android/android - Copy/user/";
 
     @PostMapping("/uploadFile")
@@ -48,7 +52,6 @@ public class TepController {
 //        if (tepRepo.existsByTenAndNguoiDung(path.split("/")[0], fileName)) {
 //            fileName += "1";
 //        }
-
         File newFile = new File(parentPath + path + "/" + fileName);
 
         try {
@@ -60,7 +63,7 @@ public class TepController {
         String mimetype = Files.probeContentType(newFile.toPath());
         Tep tep = new Tep();
         tep.setTen(fileName);
-        tep.setDuongDan( path + "/" + fileName);
+        tep.setDuongDan(path + "/" + fileName);
         switch (mimetype.split("/")[0]) {
             case "image" ->
                 tep.setLoai("image");
@@ -114,7 +117,7 @@ public class TepController {
         if (FileMaker.MakeFolder(path, folder)) {
             return ResponseEntity.ok("Thu muc da duoc tao.");
         }
-        
+
         Tep tep = new Tep();
         tep.setTen(folder);
         tep.setDuongDan(path + "/" + folder);
@@ -131,7 +134,6 @@ public class TepController {
 //        List<String> listFolder = FileMaker.getAllFolder(path);
 //        return ResponseEntity.ok(listFolder);
 //    }
-
     @GetMapping("/downloadFileOfType")
     public ResponseEntity<?> downloadFileOfType(@RequestParam("username") String username, @RequestParam("loai") String loai) {
         List<Tep> listTep = tepRepo.findByNguoiDungAndLoai(username, loai);
@@ -162,11 +164,8 @@ public class TepController {
     }
 
     @GetMapping("/downloadOneFile")
-    public ResponseEntity<?> downloadOneFile(@RequestParam("fileName") String fileName, @RequestParam("username") String username) {
-
-        Tep tep = tepRepo.findByTenAndNguoiDung(fileName, username);
-
-        File file = new File(tep.getDuongDan());
+    public ResponseEntity<?> downloadOneFile(@RequestParam("path") String path) {
+        File file = new File(parentPath + "/" + path);
 
         Resource resource = new FileSystemResource(file);
 
@@ -179,13 +178,14 @@ public class TepController {
     }
 
     @PostMapping("/deleteFile")
-    public ResponseEntity<?> deleteFile(@RequestParam("fileName") String fileName, @RequestParam("username") String username) throws IOException {
-        Tep tep = tepRepo.findByTenAndNguoiDung(fileName, username);
+    public ResponseEntity<?> deleteFile(@RequestParam("path") String path) throws IOException {
+        File file = new File(parentPath + "/" + path);
 
-        if(FileMaker.DeleteFile(tep.getDuongDan()))
+        if (FileMaker.DeleteFile(parentPath + "/" + path)) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-        tepRepo.deleteByTenAndNguoiDung(fileName, username);
+        tepRepo.deleteByDuongDan(path);
 
         return ResponseEntity.ok("Xoa file thanh cong");
     }
@@ -195,5 +195,21 @@ public class TepController {
         List<Tep> listTep = tepRepo.findByNguoiDungAndLoai(username, loai);
 
         return ResponseEntity.ok(listTep);
+    }
+
+    @GetMapping("/image/{imageName}")
+    public void getImage(HttpServletResponse response, @PathVariable String imageName) throws IOException {
+        File file = new File("C:/Users/ADMIN/Pictures/" + imageName);
+        FileInputStream inputStream = new FileInputStream(file);
+        response.setContentType(Files.probeContentType(file.toPath()));
+        IOUtils.copy(inputStream, response.getOutputStream());
+    }
+
+    @GetMapping("/video/{videoName}")
+    public void getVideo(HttpServletResponse response, @PathVariable String videoName) throws IOException {
+        File file = new File("D:/t1/" + videoName);
+        FileInputStream inputStream = new FileInputStream(file);
+        response.setContentType(Files.probeContentType(file.toPath()));
+        IOUtils.copy(inputStream, response.getOutputStream());
     }
 }

@@ -22,13 +22,13 @@ public interface TepRepo extends JpaRepository<Tep, Integer>{
     @Transactional
     Integer deleteByNguoiDung(String nguoiDung);
     
-    Tep findByTenAndNguoiDung(String ten,String nguoiDung);
-    
     @Transactional
-    Integer deleteByTenAndNguoiDung(String ten,String nguoiDung);
+    Integer deleteByDuongDan(String duongDan);
     
     boolean existsByTenAndNguoiDung(String ten,String nguoiDung);
     
     @Query("SELECT tep FROM Tep tep WHERE tep.duongDan LIKE '%:duongDan'")
     List<Tep> findByLikeDuongDan(@Param("duongDang") String duongDan);
+
+    public Tep findByDuongDan(String path);
 }
