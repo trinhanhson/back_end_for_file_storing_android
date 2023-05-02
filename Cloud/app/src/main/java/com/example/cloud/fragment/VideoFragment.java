@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.cloud.R;
 import com.example.cloud.adapter.TepAdapter;
+import com.example.cloud.databinding.FragmentVideoBinding;
 import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 
 public class VideoFragment extends Fragment {
+    FragmentVideoBinding binding;
     private ArrayList<Tep> listTep;
     private RecyclerView recyclerView;
     private TepAdapter tepAdapter;
@@ -27,16 +29,15 @@ public class VideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_video, container, false);
+       binding = FragmentVideoBinding.inflate(inflater,container,false);
 
-        initRecycleView(view);
+        initRecycleView();
 
-        return view;
+        return binding.getRoot();
     }
 
-    private void initRecycleView(View view) {
-        recyclerView = view.findViewById(R.id.rcvDataVideo);
+    private void initRecycleView() {
+        recyclerView = binding.rcvDataVideo;
 
         listTep = new ArrayList<>();
         createTepList();

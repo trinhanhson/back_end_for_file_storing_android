@@ -13,11 +13,23 @@
         android:theme="@style/Theme.Cloud.NoActionAndStatusBar"
         tools:targetApi="33">
         <activity
-            android:name=".SplashActivity"
+            android:name=".activity.LoginActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.RegisterActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".activity.LoginSelectActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".activity.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Cloud.NoActionAndStatusBar">
             <intent-filter>

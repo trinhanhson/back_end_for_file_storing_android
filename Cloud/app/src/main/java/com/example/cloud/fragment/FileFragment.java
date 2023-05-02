@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import com.example.cloud.R;
 import com.example.cloud.adapter.TepAdapter;
+import com.example.cloud.databinding.FragmentFileBinding;
+import com.example.cloud.databinding.FragmentFolderBinding;
 import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 
 
 public class FileFragment extends Fragment {
+    FragmentFileBinding binding;
 
     private ArrayList<Tep> listTep;
     private RecyclerView recyclerView;
@@ -28,16 +31,16 @@ public class FileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_file, container, false);
+        binding = FragmentFileBinding.inflate(inflater,container,false);
 
-        initRecycleView(view);
 
-        return view;
+        initRecycleView();
+
+        return binding.getRoot();
     }
 
-    private void initRecycleView( View view) {
-        recyclerView = view.findViewById(R.id.rcvDataFile);
+    private void initRecycleView() {
+        recyclerView = binding.rcvDataFile;
 
         listTep = new ArrayList<>();
         createTepList();
