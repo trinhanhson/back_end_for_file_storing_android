@@ -11,16 +11,22 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cloud.R;
+import com.example.cloud.databinding.AccountActivityBinding;
+import com.example.cloud.databinding.FragmentFolderBinding;
 
 public class AccountFragment extends Fragment {
+
+    private AccountActivityBinding binding;
+
     private AppCompatImageView btnBack;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.account_activity, container, false);
-        btnBack=view.findViewById(R.id.imgExit);
+        binding = AccountActivityBinding.inflate(inflater, container, false);
+
+        btnBack=binding.imgExit;
 
         btnBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -29,6 +35,6 @@ public class AccountFragment extends Fragment {
             fragmentTransaction.commit();
         });
 
-        return view;
+        return binding.getRoot();
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
 
     private Context mContext;
     private ArrayList<Tep> mTep;
+    private ArrayList<Tep> mTepFilter;
     private int mLayoutType;
     private IOnClickItem iOnClickItem;
 
@@ -79,6 +81,37 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
             mFileName= itemView.findViewById(R.id.fileName);
             layout= itemView.findViewById(R.id.file);
         }
+    }
+
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    mTepFilter = mTep;
+                } else {
+                    ArrayList<Tep> filteredList = new ArrayList<>();
+                    for (Tep row :mTep) {
+                        if (row.getTen().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    mTepFilter = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mTepFilter;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mTepFilter = (ArrayList<Tep>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public  void release(){
