@@ -1,7 +1,9 @@
 package com.example.cloud.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -21,8 +23,6 @@ import com.example.cloud.fragment.VideoFragment;
 import com.example.cloud.model.Tep;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.File;
-
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static Tep tep;
 
-    public static int tab;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new FolderFragment());
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            tab = item.getItemId();
-
             switch (item.getItemId()) {
                 case R.id.folder:
                     replaceFragment(new FolderFragment());
@@ -73,13 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
         btnSearch.setOnClickListener(v -> replaceFragmentOverlay(new SearchFragment()));
 
-        btnAdd = findViewById(R.id.add);
+        btnAdd=findViewById(R.id.add);
 
         btnAdd.setOnClickListener(v -> replaceFragmentOverlay(new ChoseUploadFragment()));
 
-        folderPath = RegisterActivity.user.getTenDangNhap();
-
-        init();
+        folderPath=RegisterActivity.user.getTenDangNhap();
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -92,25 +86,8 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragmentOverlay(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack("");
         fragmentTransaction.replace(R.id.frame_layout_1, fragment);
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.commit();
-    }
-
-    private void init() {
-        String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-
-        File folder = new File(directory, "hdv");
-
-        if (!folder.exists()) {
-            folder.mkdirs();
-        } else {
-            File[] files = folder.listFiles();
-            for (File file : files) {
-                file.delete();
-            }
-
-        }
-
     }
 }
