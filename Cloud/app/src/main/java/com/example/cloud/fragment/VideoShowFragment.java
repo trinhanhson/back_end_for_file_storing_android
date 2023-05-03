@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -15,7 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.cloud.R;
 import com.example.cloud.activity.MainActivity;
+import com.example.cloud.api.ApiCollection;
+import com.example.cloud.api.ApiSumoner;
 import com.example.cloud.databinding.FragmentVideoShowBinding;
 import com.google.android.exoplayer2.*;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -26,6 +30,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Objects;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class VideoShowFragment extends Fragment {
 
     private FragmentVideoShowBinding binding;
@@ -35,7 +44,7 @@ public class VideoShowFragment extends Fragment {
     private ExoPlayer exoPlayer;
     private String videoUrl;
 
-
+    private ImageView btnDelete;
 
     @Nullable
     @Override
@@ -48,6 +57,41 @@ public class VideoShowFragment extends Fragment {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(VideoShowFragment.this);
             fragmentTransaction.commit();
+        });
+
+        btnDelete=binding.trash;
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiCollection api = ApiSumoner.callApi();
+
+                Call<ResponseBody> call = api.deleteFile(MainActivity.tep.getDuongDan());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        switch (MainActivity.tab) {
+                            case R.id.folder:
+                                replaceFragment(new FolderFragment());
+                                break;
+                            case R.id.image:
+                                replaceFragment(new ImageFragment());
+                                break;
+                            case R.id.video:
+                                replaceFragment(new VideoFragment());
+                                break;
+                            case R.id.file:
+                                replaceFragment(new FileFragment());
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+            }
         });
 
         // Đường dẫn tới video
@@ -91,5 +135,13 @@ public class VideoShowFragment extends Fragment {
     public void onPause() {
         super.onPause();
         exoPlayer.pause();
+    }
+
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.remove(VideoShowFragment.this);
+        fragmentTransaction.commit();
     }
 }

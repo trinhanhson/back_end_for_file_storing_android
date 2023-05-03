@@ -177,7 +177,7 @@ public class TepController {
     @PostMapping("/deleteFile")
     public ResponseEntity<?> deleteFile(@RequestParam("path") String path) throws IOException {
 
-        if (FileMaker.DeleteFile(parentPath + path)) {
+        if (!FileMaker.DeleteFile(parentPath + path)) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 

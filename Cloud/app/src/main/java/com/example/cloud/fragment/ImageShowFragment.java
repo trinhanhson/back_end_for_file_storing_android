@@ -14,11 +14,19 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.example.cloud.R;
 import com.example.cloud.activity.MainActivity;
+import com.example.cloud.api.ApiCollection;
+import com.example.cloud.api.ApiSumoner;
 import com.example.cloud.databinding.FragmentImageShowBinding;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ImageShowFragment extends Fragment {
 
@@ -46,6 +54,41 @@ public class ImageShowFragment extends Fragment {
             fragmentTransaction.commit();
         });
 
+        btnDelete=binding.trash;
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiCollection api = ApiSumoner.callApi();
+
+                Call<ResponseBody> call = api.deleteFile(MainActivity.tep.getDuongDan());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        switch (MainActivity.tab) {
+                            case R.id.folder:
+                                replaceFragment(new FolderFragment());
+                                break;
+                            case R.id.image:
+                                replaceFragment(new ImageFragment());
+                                break;
+                            case R.id.video:
+                                replaceFragment(new VideoFragment());
+                                break;
+                            case R.id.file:
+                                replaceFragment(new FileFragment());
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
         String encodedImageName = "";
         try {
             encodedImageName = URLEncoder.encode(MainActivity.tep.getDuongDan(), "UTF-8");
@@ -56,5 +99,13 @@ public class ImageShowFragment extends Fragment {
         Glide.with(this.getContext()).load("http://192.168.55.107:8080/getFile?filePath=" + encodedImageName).into(imageView);
 
         return binding.getRoot();
+    }
+
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.remove(ImageShowFragment.this);
+        fragmentTransaction.commit();
     }
 }

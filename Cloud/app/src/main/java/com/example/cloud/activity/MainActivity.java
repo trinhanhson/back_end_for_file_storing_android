@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static Tep tep;
 
+    public static int tab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new FolderFragment());
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            tab = item.getItemId();
+
             switch (item.getItemId()) {
                 case R.id.folder:
                     replaceFragment(new FolderFragment());
@@ -69,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
 
         btnSearch.setOnClickListener(v -> replaceFragmentOverlay(new SearchFragment()));
 
-        btnAdd=findViewById(R.id.add);
+        btnAdd = findViewById(R.id.add);
 
         btnAdd.setOnClickListener(v -> replaceFragmentOverlay(new ChoseUploadFragment()));
 
-        folderPath=RegisterActivity.user.getTenDangNhap();
+        folderPath = RegisterActivity.user.getTenDangNhap();
 
         init();
     }
@@ -81,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack("");
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }

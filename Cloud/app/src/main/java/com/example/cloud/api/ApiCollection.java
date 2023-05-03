@@ -49,8 +49,7 @@ public interface ApiCollection {
 
     @FormUrlEncoded
     @POST("deleteFile")
-    Call<ResponseBody> deleteFile(@Field("fileName") String fileName,
-                                  @Field("username") String username);
+    Call<ResponseBody> deleteFile(@Field("path") String path);
 
     @FormUrlEncoded
     @POST("uploadFolder")

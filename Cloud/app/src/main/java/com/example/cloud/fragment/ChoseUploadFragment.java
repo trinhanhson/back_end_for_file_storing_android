@@ -73,10 +73,20 @@ public class ChoseUploadFragment extends Fragment {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.editFolderName.getWindowToken(), 0);
 
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.remove(ChoseUploadFragment.this);
-                fragmentTransaction.commit();
+                switch (MainActivity.tab) {
+                    case R.id.folder:
+                        replaceFragment(new FolderFragment());
+                        break;
+                    case R.id.image:
+                        replaceFragment(new ImageFragment());
+                        break;
+                    case R.id.video:
+                        replaceFragment(new VideoFragment());
+                        break;
+                    case R.id.file:
+                        replaceFragment(new FileFragment());
+                        break;
+                }
             }
         });
 
@@ -236,5 +246,13 @@ public class ChoseUploadFragment extends Fragment {
             }
         });
 
+    }
+
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.remove(ChoseUploadFragment.this);
+        fragmentTransaction.commit();
     }
 }

@@ -56,7 +56,6 @@ public class FolderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentFolderBinding.inflate(inflater, container, false);
-        MainActivity.folderPath=RegisterActivity.user.getTenDangNhap();
 
         initRecycleView();
 
@@ -126,7 +125,15 @@ public class FolderFragment extends Fragment {
 
     void taiFolder(Tep tep) {
         MainActivity.folderPath+="/"+tep.getTen();
-        initRecycleView();
+        replaceFragment();
+    }
+
+    private void replaceFragment(){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.replace(R.id.frame_layout, new FolderFragment());
+        fragmentTransaction.commit();
     }
 
     private void replaceFragmentOverlay(Fragment fragment) {
