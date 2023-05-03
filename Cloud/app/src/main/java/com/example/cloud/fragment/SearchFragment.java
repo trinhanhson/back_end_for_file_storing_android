@@ -69,6 +69,9 @@ public class SearchFragment extends Fragment {
         btnBack=binding.imgClear;
 
         btnBack.setOnClickListener(v -> {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(binding.srvSearch.getWindowToken(), 0);
+
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(SearchFragment.this);
@@ -83,7 +86,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filteredTep(newText);
+                filter(newText);
                 return false;
             }
         });
@@ -91,25 +94,20 @@ public class SearchFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void filteredTep(String newText) {
-        filteredListTep.clear();
-        if(newText.isEmpty()){
-            filteredListTep = tepAdapter.getData();
-        }else{
-            for( Tep tep : listTep){
-                if(tep.getTen().toLowerCase().contains(newText.toLowerCase())){
-                    filteredListTep.add(tep);
-                }
+    private void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<Tep> filteredlist = new ArrayList<>();
+
+        // running a for loop to compare elements.
+        for (Tep item : listTep) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getTen().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
             }
         }
-        updateRecycleView(filteredListTep);
-    }
-
-    private void updateRecycleView(List<Tep> filteredListTep) {
-        binding.rcvData.setHasFixedSize(true);
-        listTep.clear();
-        listTep.addAll(filteredListTep);
-        tepAdapter.notifyDataSetChanged();
+        tepAdapter.filterList(filteredlist);
     }
 
     private void initRecycleView() {
@@ -118,6 +116,9 @@ public class SearchFragment extends Fragment {
         tepAdapter = new TepAdapter(this.getContext(), listTep, R.layout.file_folder, new IOnClickItem() {
             @Override
             public void onClickItem(Tep tep) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.srvSearch.getWindowToken(), 0);
+
                 taiFile(tep);
             }
         });

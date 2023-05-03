@@ -45,6 +45,15 @@ public class TepAdapter extends
         return this.mTep;
     }
 
+    public void filterList(ArrayList<Tep> filterlist) {
+        // below line is to add our filtered
+        // list in our course array list.
+        mTep = filterlist;
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public TepAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -57,7 +66,6 @@ public class TepAdapter extends
     public void onBindViewHolder(@NonNull TepAdapter.ViewHolder holder, int position) {
         Tep tep = mTep.get(position);
         holder.mFileName.setText(tep.getTen());
-        Log.e("e",tep.toString());
         switch (tep.getLoai()) {
             case "image":
                 String encodedImageName="";
