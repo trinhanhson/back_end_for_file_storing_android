@@ -2,16 +2,26 @@ package com.example.cloud.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cloud.R;
+import com.example.cloud.api.ApiCollection;
+import com.example.cloud.api.ApiConfig;
+import com.example.cloud.api.ApiSumoner;
 import com.example.cloud.databinding.ActivityLoginBinding;
 import com.example.cloud.eventbus.LoginEvent;
 import com.example.cloud.model.NguoiDung;
 
 import org.greenrobot.eventbus.EventBus;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
@@ -32,7 +42,30 @@ public class LoginActivity extends AppCompatActivity {
             passWord = binding.txtPass.getText()+"";
             if(!userName.isEmpty() && !passWord.isEmpty()){
                 //callapi
+
+                ApiCollection api= ApiSumoner.callApi();
+
+                user =new NguoiDung();
+                user.setTenDangNhap(userName);
+                user.setMatKhau(passWord);
+
+                Call<NguoiDung> call=api.login(user);
+
+                call.enqueue(new Callback<NguoiDung>() {
+                    @Override
+                    public void onResponse(Call<NguoiDung> call, Response<NguoiDung> response) {
+                        user=response.body();
+                        Log.e("1",user.getId()+"");
+                    }
+
+                    @Override
+                    public void onFailure(Call<NguoiDung> call, Throwable t) {
+                        Log.e("1",t.getMessage());
+                    }
+                });
+
                 if(user!=null){
+                    RegisterActivity.user=user;
                     callHome();
                 }else{
                     Toast.makeText(this, "SAI Ten DN hoac Pass", Toast.LENGTH_SHORT).show();

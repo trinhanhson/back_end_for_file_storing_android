@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton btnAdd;
 
+    public static String folderPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         btnAdd=findViewById(R.id.add);
 
         btnAdd.setOnClickListener(v -> replaceFragmentOverlay(new ChoseUploadFragment()));
+
+        folderPath=RegisterActivity.user.getTenDangNhap();
     }
 
     private void replaceFragment(Fragment fragment) {

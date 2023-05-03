@@ -18,11 +18,12 @@ import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class VideoFragment extends Fragment {
     FragmentVideoBinding binding;
-    private ArrayList<Tep> listTep;
+    private List<Tep> listTep;
     private RecyclerView recyclerView;
     private TepAdapter tepAdapter;
 

@@ -34,9 +34,13 @@ public class NguoiDungController {
 
         NguoiDung nguoiDung = nguoiDungRepo.findByTenDangNhapVaMatKhau(_nguoiDung.getTenDangNhap(), _nguoiDung.getMatKhau());
 
-        if (nguoiDung == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        return ResponseEntity.ok(nguoiDung);
+    }
+    
+    @PostMapping("/login1")
+    public ResponseEntity<?> login1(@RequestParam("username") String username,@RequestParam("password") String password) {
+
+        NguoiDung nguoiDung = nguoiDungRepo.findByTenDangNhapVaMatKhau(username, password);
 
         return ResponseEntity.ok(nguoiDung);
     }

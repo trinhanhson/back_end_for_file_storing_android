@@ -62,7 +62,7 @@ public class TepController {
         String mimetype = Files.probeContentType(newFile.toPath());
         Tep tep = new Tep();
         tep.setTen(fileName);
-        tep.setDuongDan(path + "/" + fileName);
+        tep.setDuongDan(path);
         switch (mimetype.split("/")[0]) {
             case "image" ->
                 tep.setLoai("image");
@@ -119,8 +119,7 @@ public class TepController {
 
         Tep tep = new Tep();
         tep.setTen(folder);
-        tep.setDuongDan(path + "/" + folder);
-        tep.setLoai("thu muc");
+        tep.setDuongDan(path);
         tep.setNguoiDung(path.split("/")[0]);
 
         tepRepo.save(tep);

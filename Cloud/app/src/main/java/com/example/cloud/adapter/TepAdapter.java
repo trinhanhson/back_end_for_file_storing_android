@@ -18,17 +18,18 @@ import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TepAdapter extends
 RecyclerView.Adapter<TepAdapter.ViewHolder> {
 
     private Context mContext;
-    private ArrayList<Tep> mTep;
-    private ArrayList<Tep> mTepFilter;
+    private List<Tep> mTep;
+    private List<Tep> mTepFilter;
     private int mLayoutType;
     private IOnClickItem iOnClickItem;
 
-    public TepAdapter(Context mContext, ArrayList<Tep> mTep,int mLayoutType, IOnClickItem iOnClickItem) {
+    public TepAdapter(Context mContext, List<Tep> mTep,int mLayoutType, IOnClickItem iOnClickItem) {
         this.mContext = mContext;
         this.mTep = mTep;
         this.mLayoutType = mLayoutType;
