@@ -1,9 +1,12 @@
 package com.example.cloud.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,17 +19,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cloud.R;
 import com.example.cloud.adapter.TepAdapter;
-import com.example.cloud.databinding.SearchActivityBinding;
+import com.example.cloud.databinding.FragmentSearchBinding;
 import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFragment extends Fragment {
 
-    private SearchActivityBinding binding;
+    private FragmentSearchBinding binding;
 
-    private ArrayList<Tep> listTep;
+    private List<Tep> listTep = new ArrayList<>();
+    private List<Tep> filteredListTep = new ArrayList<>();
+
     private RecyclerView recyclerView;
     private TepAdapter tepAdapter;
 
@@ -37,7 +43,7 @@ public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding= SearchActivityBinding.inflate(inflater,container,false);
+        binding= FragmentSearchBinding.inflate(inflater,container,false);
 
         initRecycleView();
 
@@ -54,17 +60,11 @@ public class SearchFragment extends Fragment {
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                tepAdapter.getFilter().filter(query);
-
-                return false;
-            }
+            public boolean onQueryTextSubmit(String query) {return false;}
 
             @Override
-            public boolean onQueryTextChange(String query) {
-
-                tepAdapter.getFilter().filter(query);
-
+            public boolean onQueryTextChange(String newText) {
+                filteredTep(newText);
                 return false;
             }
         });
@@ -72,10 +72,29 @@ public class SearchFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void filteredTep(String newText) {
+        filteredListTep.clear();
+        if(newText.isEmpty()){
+            filteredListTep = tepAdapter.getData();
+        }else{
+            for( Tep tep : listTep){
+                if(tep.getTen().toLowerCase().contains(newText.toLowerCase())){
+                    filteredListTep.add(tep);
+                }
+            }
+        }
+        updateRecycleView(filteredListTep);
+    }
+
+    private void updateRecycleView(List<Tep> filteredListTep) {
+        binding.rcvData.setHasFixedSize(true);
+        listTep.clear();
+        listTep.addAll(filteredListTep);
+        tepAdapter.notifyDataSetChanged();
+    }
+
     private void initRecycleView() {
         recyclerView = binding.rcvData;
-
-        listTep = new ArrayList<>();
         createTepList();
         tepAdapter = new TepAdapter(this.getContext(), listTep, R.layout.file_folder, new IOnClickItem() {
             @Override
@@ -87,6 +106,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void createTepList() {
+        listTep = FolderFragment.tepAdapter.getData();
     }
 
     @Override
@@ -98,5 +118,10 @@ public class SearchFragment extends Fragment {
     }
 
     private void taiFile(Tep tep) {
+    }
+    public void hideKeyBoard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        binding.srvSearch.clearFocus();
     }
 }

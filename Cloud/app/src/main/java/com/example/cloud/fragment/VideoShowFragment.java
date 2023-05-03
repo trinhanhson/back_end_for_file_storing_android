@@ -41,10 +41,7 @@ public class VideoShowFragment extends Fragment {
         btnBack=binding.imgExit;
         btnBack.setOnClickListener(v -> {
             exoPlayer.pause();
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.remove(VideoShowFragment.this);
-            fragmentTransaction.commit();
+            fragmentCallBack();
         });
 
         // Đường dẫn tới video
@@ -61,6 +58,13 @@ public class VideoShowFragment extends Fragment {
         playVideo(videoUrl);
 
         return binding.getRoot();
+    }
+
+    private void fragmentCallBack() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(VideoShowFragment.this);
+        fragmentTransaction.commit();
     }
 
     private void playVideo(String videoUrl) {

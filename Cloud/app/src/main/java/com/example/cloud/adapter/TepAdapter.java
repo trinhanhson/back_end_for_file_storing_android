@@ -29,7 +29,6 @@ public class TepAdapter extends
 
     private Context mContext;
     private List<Tep> mTep;
-    private List<Tep> mTepFilter;
     private int mLayoutType;
     private IOnClickItem iOnClickItem;
 
@@ -38,6 +37,12 @@ public class TepAdapter extends
         this.mTep = mTep;
         this.mLayoutType = mLayoutType;
         this.iOnClickItem = iOnClickItem;
+    }
+    public void setData(List<Tep> list){
+        this.mTep = list;
+    }
+    public List<Tep> getData(){
+        return this.mTep;
     }
 
     @NonNull
@@ -102,37 +107,6 @@ public class TepAdapter extends
             mFileName = itemView.findViewById(R.id.fileName);
             layout = itemView.findViewById(R.id.file);
         }
-    }
-
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    mTepFilter = mTep;
-                } else {
-                    ArrayList<Tep> filteredList = new ArrayList<>();
-                    for (Tep row : mTep) {
-                        if (row.getTen().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(row);
-                        }
-                    }
-
-                    mTepFilter = filteredList;
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = mTepFilter;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mTepFilter = (ArrayList<Tep>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
     }
 
     public void release() {

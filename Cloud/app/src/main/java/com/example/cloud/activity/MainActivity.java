@@ -1,6 +1,9 @@
 package com.example.cloud.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_1, fragment);
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.commit();
     }
 }
