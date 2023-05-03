@@ -29,10 +29,9 @@ public class NguoiDungController {
     private TepRepo tepRepo;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam("username") String username,
-            @RequestParam("password") String password) {
+    public ResponseEntity<?> login(@RequestParam("nguoiDung") NguoiDung _nguoiDung) {
 
-        NguoiDung nguoiDung = nguoiDungRepo.findByTenDangNhapVaMatKhau(username, password);
+        NguoiDung nguoiDung = nguoiDungRepo.findByTenDangNhapVaMatKhau(_nguoiDung.getTenDangNhap(), _nguoiDung.getMatKhau());
 
         if (nguoiDung == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -42,27 +41,23 @@ public class NguoiDungController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestParam("username") String username,
-            @RequestParam("password") String password) {
+    public ResponseEntity<?> signup(@RequestParam("nguoiDung") NguoiDung _nguoiDung) {
 
         // Check if user with given username already exists in the database
-        if (nguoiDungRepo.existsByTenDangNhap(username)) {
+        if (nguoiDungRepo.existsByTenDangNhap(_nguoiDung.getTenDangNhap())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Ten dang nhap da ton tai.");
         }
 
-        NguoiDung nguoiDung = new NguoiDung();
-
-        nguoiDung.setTenDangNhap(username);
-        nguoiDung.setMatKhau(password);
-
         // Save user to the database
-        nguoiDungRepo.save(nguoiDung);
+        nguoiDungRepo.save(_nguoiDung);
 
-        if (!FileMaker.MakeFolder("", username)) {
+        if (!FileMaker.MakeFolder("", _nguoiDung.getTenDangNhap())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Loi tao folder.");
         }
+        
+        _nguoiDung=nguoiDungRepo.findByTenDangNhapVaMatKhau(_nguoiDung.getTenDangNhap(), _nguoiDung.getTenDangNhap());
 
-        return ResponseEntity.ok(nguoiDung);
+        return ResponseEntity.ok(_nguoiDung);
     }
 
     @PostMapping("/deleteUser")
