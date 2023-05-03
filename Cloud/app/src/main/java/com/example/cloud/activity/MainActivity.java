@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static Tep tep;
 
+    public static int tab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new FolderFragment());
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            tab=item.getItemId();
             switch (item.getItemId()) {
                 case R.id.folder:
                     replaceFragment(new FolderFragment());
