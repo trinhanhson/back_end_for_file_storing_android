@@ -12,13 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cloud.R;
+import com.example.cloud.activity.RegisterActivity;
 import com.example.cloud.adapter.TepAdapter;
+import com.example.cloud.api.ApiCollection;
+import com.example.cloud.api.ApiSumoner;
 import com.example.cloud.databinding.FragmentImageBinding;
 import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class ImageFragment extends Fragment {
@@ -39,23 +46,38 @@ public class ImageFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void initRecycleView( ) {
+    private void initRecycleView() {
         recyclerView = binding.rcvDataImage;
 
         listTep = new ArrayList<>();
         createTepList();
-        tepAdapter = new TepAdapter(this.getContext(),listTep,R.layout.file,new IOnClickItem() {
-            @Override
-            public void onClickItem(Tep tep) {
-                taiFile(tep);
-
-            }
-        });
-        recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(),4));
-        recyclerView.setAdapter(tepAdapter);
     }
 
     private void createTepList() {
+
+        ApiCollection api = ApiSumoner.callApi();
+
+        Call<List<Tep>> call = api.downloadNameFileOfType(RegisterActivity.user.getTenDangNhap(),"image");
+
+        call.enqueue(new Callback<List<Tep>>() {
+            @Override
+            public void onResponse(Call<List<Tep>> call, Response<List<Tep>> response) {
+                listTep = response.body();
+                Log.e("t", listTep.size() + "");
+                tepAdapter = new TepAdapter(ImageFragment.this.getContext(), listTep, R.layout.file, new IOnClickItem() {
+                    @Override
+                    public void onClickItem(Tep tep) {
+                        taiFile(tep);
+                    }
+                });
+                recyclerView.setAdapter(tepAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Tep>> call, Throwable t) {
+                Log.e("1", t.getMessage());
+            }
+        });
     }
 
     @Override

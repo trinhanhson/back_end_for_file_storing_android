@@ -44,6 +44,10 @@ public interface ApiCollection {
     @GET("downloadNameAll")
     Call<List<Tep>> downloadNameAll(@Query("path") String path);
 
+    @GET("downloadNameFileOfType")
+    Call<List<Tep>>  downloadNameFileOfType(@Query("username") String username,
+                                            @Query("loai") String loai);
+
     @FormUrlEncoded
     @POST("deleteFile")
     Call<ResponseBody> deleteFile(@Field("fileName") String fileName,

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgExit"
@@ -20,8 +21,8 @@
 
 
     <VideoView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
+        android:id="@+id/videoView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imgExit"
         android:layout_above="@+id/bottom"

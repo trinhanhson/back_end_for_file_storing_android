@@ -1,6 +1,7 @@
 package com.example.cloud.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.cloud.R;
 import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TepAdapter extends
-RecyclerView.Adapter<TepAdapter.ViewHolder> {
+        RecyclerView.Adapter<TepAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Tep> mTep;
@@ -29,7 +33,7 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
     private int mLayoutType;
     private IOnClickItem iOnClickItem;
 
-    public TepAdapter(Context mContext, List<Tep> mTep,int mLayoutType, IOnClickItem iOnClickItem) {
+    public TepAdapter(Context mContext, List<Tep> mTep, int mLayoutType, IOnClickItem iOnClickItem) {
         this.mContext = mContext;
         this.mTep = mTep;
         this.mLayoutType = mLayoutType;
@@ -48,20 +52,36 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull TepAdapter.ViewHolder holder, int position) {
         Tep tep = mTep.get(position);
         holder.mFileName.setText(tep.getTen());
-        int imageType = R.drawable.ic_folder;
+        Log.e("e",tep.toString());
         switch (tep.getLoai()) {
             case "image":
-                imageType = R.drawable.ic_image;
+                String encodedImageName="";
+                try {
+                    encodedImageName = URLEncoder.encode(tep.getDuongDan(), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                Glide.with(mContext).load("http://192.168.0.183:8080/getFile?filePath=" + encodedImageName).into(holder.mFileImage);
                 break;
             case "video":
-                imageType = R.drawable.ic_video_lib;
+                RequestOptions options = new RequestOptions().frame(0);
+
+                String encodedVideoName="";
+                try {
+                    encodedVideoName = URLEncoder.encode(tep.getDuongDan(), "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                Glide.with(mContext).load("http://192.168.0.183:8080/getFile?filePath=" + encodedVideoName).apply(options).into(holder.mFileImage);
                 break;
             case "khac":
-                imageType = R.drawable.ic_file;
+                Glide.with(mContext).load(R.drawable.ic_file).into(holder.mFileImage);
                 break;
-        }
+            case "thu muc":
+                Glide.with(mContext).load(R.drawable.ic_folder).into(holder.mFileImage);
 
-        Glide.with(mContext).load(imageType).into(holder.mFileImage);
+        }
 
         holder.layout.setOnClickListener(v -> iOnClickItem.onClickItem(tep));
     }
@@ -78,9 +98,9 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mFileImage= itemView.findViewById(R.id.fileImage);
-            mFileName= itemView.findViewById(R.id.fileName);
-            layout= itemView.findViewById(R.id.file);
+            mFileImage = itemView.findViewById(R.id.fileImage);
+            mFileName = itemView.findViewById(R.id.fileName);
+            layout = itemView.findViewById(R.id.file);
         }
     }
 
@@ -93,7 +113,7 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
                     mTepFilter = mTep;
                 } else {
                     ArrayList<Tep> filteredList = new ArrayList<>();
-                    for (Tep row :mTep) {
+                    for (Tep row : mTep) {
                         if (row.getTen().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
@@ -115,7 +135,7 @@ RecyclerView.Adapter<TepAdapter.ViewHolder> {
         };
     }
 
-    public  void release(){
-        mContext=null;
+    public void release() {
+        mContext = null;
     }
 }

@@ -17,6 +17,7 @@ import com.example.cloud.fragment.FolderFragment;
 import com.example.cloud.fragment.ImageFragment;
 import com.example.cloud.fragment.SearchFragment;
 import com.example.cloud.fragment.VideoFragment;
+import com.example.cloud.model.Tep;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton btnAdd;
 
     public static String folderPath;
+
+    public static Tep tep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

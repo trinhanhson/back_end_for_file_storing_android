@@ -160,7 +160,7 @@ public class TepController {
     //Newcode
     @GetMapping("/downloadNameAll")
     public ResponseEntity<?> downloadNameAll(@RequestParam("path") String path) {
-        List<Tep> listNameTep = tepRepo.findByLikeDuongDan(path);
+        List<Tep> listNameTep = tepRepo.findByDuongDanCha(path);
         return ResponseEntity.ok(listNameTep);
     }
 

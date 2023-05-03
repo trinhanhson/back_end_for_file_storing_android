@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,25 +57,9 @@ public class FolderFragment extends Fragment {
 
         listTep = new ArrayList<>();
         createTepList();
-        tepAdapter = new TepAdapter(this.getContext(), listTep, R.layout.file_folder, new IOnClickItem() {
-            @Override
-            public void onClickItem(Tep tep) {
-                if (tep.getLoai().equals("thu muc")) {
-                    taiFolder(tep);
-                } else {
-                    taiFile(tep);
-                }
-            }
-        });
-        recyclerView.setAdapter(tepAdapter);
     }
 
     private void createTepList() {
-//        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
-//        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
-//        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
-//        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
-//        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
 
         ApiCollection api = ApiSumoner.callApi();
 
@@ -83,6 +69,18 @@ public class FolderFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Tep>> call, Response<List<Tep>> response) {
                 listTep = response.body();
+                Log.e("t", listTep.size()+"");
+                tepAdapter = new TepAdapter(FolderFragment.this.getContext(), listTep, R.layout.file_folder, new IOnClickItem() {
+                    @Override
+                    public void onClickItem(Tep tep) {
+                        if (tep.getLoai().equals("thu muc")) {
+                            taiFolder(tep);
+                        } else {
+                            taiFile(tep);
+                        }
+                    }
+                });
+                recyclerView.setAdapter(tepAdapter);
             }
 
             @Override
@@ -101,10 +99,27 @@ public class FolderFragment extends Fragment {
     }
 
     void taiFile(Tep tep) {
+        MainActivity.tep=tep;
 
+        if(tep.getLoai().equals("video")){
+            replaceFragmentOverlay(new VideoShowFragment());
+        }
+        else if(tep.getLoai().equals("image")){
+
+        }
+        else{
+
+        }
     }
 
     void taiFolder(Tep tep) {
 
+    }
+
+    private void replaceFragmentOverlay(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_1, fragment);
+        fragmentTransaction.commit();
     }
 }

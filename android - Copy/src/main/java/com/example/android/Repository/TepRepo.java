@@ -27,8 +27,8 @@ public interface TepRepo extends JpaRepository<Tep, Integer>{
     
     boolean existsByTenAndNguoiDung(String ten,String nguoiDung);
     
-    @Query("SELECT tep FROM Tep tep WHERE tep.duongDan LIKE '%:duongDan'")
-    List<Tep> findByLikeDuongDan(@Param("duongDang") String duongDan);
+    @Query("SELECT tep FROM Tep tep WHERE tep.duongDanCha = :duongDan")
+    List<Tep> findByDuongDanCha(@Param("duongDan") String duongDan);
 
     public Tep findByDuongDan(String path);
 }

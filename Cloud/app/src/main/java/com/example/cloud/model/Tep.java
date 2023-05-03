@@ -9,16 +9,16 @@ public class Tep {
     @SerializedName("ten")
     private String ten;
 
-    @SerializedName("duong_dan")
+    @SerializedName("duongDan")
     private String duongDan;
 
-    @SerializedName("duong_dan_cha")
+    @SerializedName("duongDanCha")
     private String duongDanCha;
 
     @SerializedName("loai")
     private String loai;
 
-    @SerializedName("nguoi_dung")
+    @SerializedName("nguoiDung")
     private String nguoiDung;
 
     public Tep() {

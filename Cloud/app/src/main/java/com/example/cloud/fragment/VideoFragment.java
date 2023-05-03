@@ -3,6 +3,8 @@ package com.example.cloud.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,13 +14,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cloud.R;
+import com.example.cloud.activity.MainActivity;
+import com.example.cloud.activity.RegisterActivity;
 import com.example.cloud.adapter.TepAdapter;
+import com.example.cloud.api.ApiCollection;
+import com.example.cloud.api.ApiSumoner;
 import com.example.cloud.databinding.FragmentVideoBinding;
 import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class VideoFragment extends Fragment {
@@ -42,18 +52,33 @@ public class VideoFragment extends Fragment {
 
         listTep = new ArrayList<>();
         createTepList();
-        tepAdapter = new TepAdapter(this.getContext(),listTep,R.layout.file,new IOnClickItem() {
-            @Override
-            public void onClickItem(Tep tep) {
-                taiFile(tep);
-
-            }
-        });
-        recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(),4));
-        recyclerView.setAdapter(tepAdapter);
     }
 
     private void createTepList() {
+
+        ApiCollection api = ApiSumoner.callApi();
+
+        Call<List<Tep>> call = api.downloadNameFileOfType(RegisterActivity.user.getTenDangNhap(),"video");
+
+        call.enqueue(new Callback<List<Tep>>() {
+            @Override
+            public void onResponse(Call<List<Tep>> call, Response<List<Tep>> response) {
+                listTep = response.body();
+                Log.e("t", listTep.size() + "");
+                tepAdapter = new TepAdapter(VideoFragment.this.getContext(), listTep, R.layout.file, new IOnClickItem() {
+                    @Override
+                    public void onClickItem(Tep tep) {
+                        taiFile(tep);
+                    }
+                });
+                recyclerView.setAdapter(tepAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<List<Tep>> call, Throwable t) {
+                Log.e("1", t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -64,6 +89,15 @@ public class VideoFragment extends Fragment {
         }
     }
 
-    private void taiFile(Tep tep) {
+    void taiFile(Tep tep) {
+        MainActivity.tep=tep;
+        replaceFragmentOverlay(new VideoShowFragment());
+    }
+
+    private void replaceFragmentOverlay(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_1, fragment);
+        fragmentTransaction.commit();
     }
 }
