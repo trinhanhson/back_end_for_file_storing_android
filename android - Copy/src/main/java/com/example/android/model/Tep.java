@@ -29,6 +29,9 @@ public class Tep {
     @Column(name = "duong_dan")
     private String duongDan;
     
+    @Column(name = "duong_dan_cha")
+    private String duongDanCha;
+    
     @Column(name = "loai")
     private String loai;
     

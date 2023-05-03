@@ -62,7 +62,8 @@ public class TepController {
         String mimetype = Files.probeContentType(newFile.toPath());
         Tep tep = new Tep();
         tep.setTen(fileName);
-        tep.setDuongDan(path);
+        tep.setDuongDan(path + "/" + fileName);
+        tep.setDuongDanCha(path);
         switch (mimetype.split("/")[0]) {
             case "image" ->
                 tep.setLoai("image");
@@ -119,7 +120,9 @@ public class TepController {
 
         Tep tep = new Tep();
         tep.setTen(folder);
-        tep.setDuongDan(path);
+        tep.setDuongDan(path + "/" + folder);
+        tep.setDuongDanCha(path);
+        tep.setLoai("thu muc");
         tep.setNguoiDung(path.split("/")[0]);
 
         tepRepo.save(tep);
@@ -209,7 +212,7 @@ public class TepController {
         response.setContentType(Files.probeContentType(file.toPath()));
         IOUtils.copy(inputStream, response.getOutputStream());
     }
-    
+
 //    @GetMapping("/getFile/{filePath}")
 //    public void getFile(HttpServletResponse response, @PathVariable String filePath) throws IOException {
 //        File file = new File(parentPath + filePath);
@@ -217,9 +220,8 @@ public class TepController {
 //        response.setContentType(Files.probeContentType(file.toPath()));
 //        IOUtils.copy(inputStream, response.getOutputStream());
 //    }
-    
     @GetMapping("/getFile")
-    public void getFile(HttpServletResponse response, @RequestParam("filePath")  String filePath) throws IOException {
+    public void getFile(HttpServletResponse response, @RequestParam("filePath") String filePath) throws IOException {
         File file = new File(parentPath + filePath);
         FileInputStream inputStream = new FileInputStream(file);
         response.setContentType(Files.probeContentType(file.toPath()));
