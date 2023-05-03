@@ -44,11 +44,11 @@ public class VideoShowFragment extends Fragment {
 
 
         btnBack.setOnClickListener(v -> {
+            exoPlayer.pause();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(VideoShowFragment.this);
             fragmentTransaction.commit();
-            exoPlayer.pause();
         });
 
         // Đường dẫn tới video
