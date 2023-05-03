@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -169,7 +170,7 @@ public class FileFragment extends Fragment {
     }
 
     private void moFile(File file) {
-        Uri uri = Uri.fromFile(file);
+        Uri uri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".provider",file);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         String mime = getActivity().getContentResolver().getType(uri);
         intent.setDataAndType(uri, mime);

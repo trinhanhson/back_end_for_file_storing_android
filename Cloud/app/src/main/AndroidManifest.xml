@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
@@ -22,6 +21,16 @@
         android:theme="@style/Theme.Cloud.NoActionAndStatusBar"
         android:usesCleartextTraffic="true"
         tools:targetApi="33">
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <activity
             android:name=".activity.LoginActivity"
@@ -37,12 +46,14 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing">
         </activity>
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.Cloud.NoActionAndStatusBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

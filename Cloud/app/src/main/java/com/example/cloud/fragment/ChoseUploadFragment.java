@@ -2,6 +2,7 @@ package com.example.cloud.fragment;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
 import com.example.cloud.R;
@@ -67,6 +69,10 @@ public class ChoseUploadFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.editFolderName.getWindowToken(), 0);
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.remove(ChoseUploadFragment.this);
@@ -97,6 +103,11 @@ public class ChoseUploadFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.addThuMuc.setVisibility(View.INVISIBLE);
+
+                binding.editFolderName.setText("");
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.editFolderName.getWindowToken(), 0);
             }
         });
 
@@ -104,8 +115,6 @@ public class ChoseUploadFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.addThuMuc.setVisibility(View.VISIBLE);
-
-
             }
         });
 
@@ -115,7 +124,7 @@ public class ChoseUploadFragment extends Fragment {
                 if (binding.editFolderName.getText().toString().equals(""))
                     return;
 
-                binding.addThuMuc.setVisibility(View.VISIBLE);
+                binding.addThuMuc.setVisibility(View.INVISIBLE);
 
                 ApiCollection api = ApiSumoner.callApi();
 
@@ -132,6 +141,11 @@ public class ChoseUploadFragment extends Fragment {
 
                     }
                 });
+
+                binding.editFolderName.setText("");
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.editFolderName.getWindowToken(), 0);
             }
         });
 
@@ -191,7 +205,7 @@ public class ChoseUploadFragment extends Fragment {
         String path = MainActivity.folderPath;
         RequestBody pathRequestBody = RequestBody.create(MediaType.parse("multipart/form-data"), path);
 
-        Log.e("Name", "1");
+        Log.e("Name", MainActivity.folderPath);
 
         ApiCollection api = ApiSumoner.callApi();
         Call<ResponseBody> call = api.uploadFile(filePart, pathRequestBody);

@@ -115,17 +115,16 @@ public class TepController {
     @PostMapping("/uploadFolder")
     public ResponseEntity<?> uploadFolder(@RequestParam("folder") String folder, @RequestParam("path") String path) {
         if (FileMaker.MakeFolder(path, folder)) {
+            Tep tep = new Tep();
+            tep.setTen(folder);
+            tep.setDuongDan(path + "/" + folder);
+            tep.setDuongDanCha(path);
+            tep.setLoai("thu muc");
+            tep.setNguoiDung(path.split("/")[0]);
+
+            tepRepo.save(tep);
             return ResponseEntity.ok("Thu muc da duoc tao.");
         }
-
-        Tep tep = new Tep();
-        tep.setTen(folder);
-        tep.setDuongDan(path + "/" + folder);
-        tep.setDuongDanCha(path);
-        tep.setLoai("thu muc");
-        tep.setNguoiDung(path.split("/")[0]);
-
-        tepRepo.save(tep);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
@@ -172,9 +171,6 @@ public class TepController {
 
         // Trả về đối tượng ResponseEntity chứa tệp tin và các đầu mục HTTP cần thiết
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(resource);
     }
 

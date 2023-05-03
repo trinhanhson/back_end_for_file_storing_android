@@ -99,6 +99,7 @@ public class VideoFragment extends Fragment {
     private void replaceFragmentOverlay(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.replace(R.id.frame_layout_1, fragment);
         fragmentTransaction.commit();
     }

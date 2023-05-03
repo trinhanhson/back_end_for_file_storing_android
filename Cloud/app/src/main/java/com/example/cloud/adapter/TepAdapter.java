@@ -62,7 +62,7 @@ public class TepAdapter extends
                     e.printStackTrace();
                 }
 
-                Glide.with(mContext).load("http://192.168.0.183:8080/getFile?filePath=" + encodedImageName).into(holder.mFileImage);
+                Glide.with(mContext).load("http://192.168.55.107:8080/getFile?filePath=" + encodedImageName).into(holder.mFileImage);
                 break;
             case "video":
                 RequestOptions options = new RequestOptions().frame(0);
@@ -73,7 +73,7 @@ public class TepAdapter extends
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                Glide.with(mContext).load("http://192.168.0.183:8080/getFile?filePath=" + encodedVideoName).apply(options).into(holder.mFileImage);
+                Glide.with(mContext).load("http://192.168.55.107:8080/getFile?filePath=" + encodedVideoName).apply(options).into(holder.mFileImage);
                 break;
             case "khac":
                 Glide.with(mContext).load(R.drawable.ic_file).into(holder.mFileImage);
@@ -129,7 +129,7 @@ public class TepAdapter extends
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                mTepFilter = (ArrayList<Tep>) filterResults.values;
+                mTepFilter = (List<Tep>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

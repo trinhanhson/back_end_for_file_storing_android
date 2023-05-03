@@ -1,5 +1,6 @@
 package com.example.cloud.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,6 +65,9 @@ public class SearchFragment extends Fragment {
         btnBack=binding.imgClear;
 
         btnBack.setOnClickListener(v -> {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(binding.srvSearch.getWindowToken(), 0);
+
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(SearchFragment.this);
@@ -81,7 +86,6 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
-
                 tepAdapter.getFilter().filter(query);
 
                 return false;
@@ -155,6 +159,7 @@ public class SearchFragment extends Fragment {
     private void replaceFragmentOverlay(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.replace(R.id.frame_layout_1, fragment);
         fragmentTransaction.commit();
     }

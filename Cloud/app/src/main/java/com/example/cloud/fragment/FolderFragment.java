@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -63,7 +64,7 @@ public class FolderFragment extends Fragment {
 
     }
 
-    private void initRecycleView() {
+    public void initRecycleView() {
         recyclerView = binding.rcvDataFolder;
 
         listTep = new ArrayList<>();
@@ -124,12 +125,11 @@ public class FolderFragment extends Fragment {
     }
 
     void taiFolder(Tep tep) {
-        MainActivity.folderPath+=tep.getDuongDan();
+        MainActivity.folderPath+="/"+tep.getTen();
         initRecycleView();
     }
 
     private void replaceFragmentOverlay(Fragment fragment) {
-
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack("");
@@ -183,7 +183,7 @@ public class FolderFragment extends Fragment {
                             }
                         }
                     }
-                    Log.e("ss", "2");
+                    Log.e("ss", file.getAbsolutePath());
 
                     moFile(file);
 
@@ -205,7 +205,7 @@ public class FolderFragment extends Fragment {
     }
 
     private void moFile(File file) {
-        Uri uri = Uri.fromFile(file);
+        Uri uri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getPackageName() + ".provider",file);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         String mime = getActivity().getContentResolver().getType(uri);
         intent.setDataAndType(uri, mime);

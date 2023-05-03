@@ -37,6 +37,8 @@ public class ImageShowFragment extends Fragment {
 
         btnDelete = binding.trash;
 
+        imageView=binding.imageView;
+
         btnBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -51,7 +53,7 @@ public class ImageShowFragment extends Fragment {
             e.printStackTrace();
         }
 
-        Glide.with(this.getContext()).load("http://192.168.0.183:8080/getFile?filePath=" + encodedImageName).into(imageView);
+        Glide.with(this.getContext()).load("http://192.168.55.107:8080/getFile?filePath=" + encodedImageName).into(imageView);
 
         return binding.getRoot();
     }

@@ -59,7 +59,7 @@ public class VideoShowFragment extends Fragment {
             e.printStackTrace();
         }
 
-        videoUrl="http://192.168.0.183:8080/getFile?filePath=" + encodedVideoName;
+        videoUrl="http://192.168.55.107:8080/getFile?filePath=" + encodedVideoName;
 
         playVideo(videoUrl);
 

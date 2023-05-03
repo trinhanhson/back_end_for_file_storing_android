@@ -1,6 +1,7 @@
 package com.example.cloud.activity;
 
 import android.os.Bundle;
+import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -19,6 +20,8 @@ import com.example.cloud.fragment.SearchFragment;
 import com.example.cloud.fragment.VideoFragment;
 import com.example.cloud.model.Tep;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -71,11 +74,14 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(v -> replaceFragmentOverlay(new ChoseUploadFragment()));
 
         folderPath=RegisterActivity.user.getTenDangNhap();
+
+        init();
     }
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
@@ -83,7 +89,25 @@ public class MainActivity extends AppCompatActivity {
     private void replaceFragmentOverlay(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack("");
         fragmentTransaction.replace(R.id.frame_layout_1, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void init() {
+        String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+
+        File folder = new File(directory, "hdv");
+
+        if (!folder.exists()) {
+            folder.mkdirs();
+        } else {
+            File[] files = folder.listFiles();
+            for (File file : files) {
+                file.delete();
+            }
+
+        }
+
     }
 }

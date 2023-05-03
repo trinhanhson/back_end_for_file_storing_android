@@ -56,21 +56,20 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<NguoiDung> call, Response<NguoiDung> response) {
                         user=response.body();
                         Log.e("1",user.getId()+"");
+                        if(user!=null){
+                            RegisterActivity.user=user;
+                            callHome();
+                        }else{
+
+                        }
                     }
 
                     @Override
                     public void onFailure(Call<NguoiDung> call, Throwable t) {
-                        Log.e("1",t.getMessage());
+                        Toast.makeText(LoginActivity.this, "SAI Ten DN hoac Pass", Toast.LENGTH_SHORT).show();
                     }
                 });
 
-                if(user!=null){
-                    RegisterActivity.user=user;
-                    callHome();
-                }else{
-                    Toast.makeText(this, "SAI Ten DN hoac Pass", Toast.LENGTH_SHORT).show();
-
-                }
             }else{
                 if(userName.isEmpty()) binding.txtUsername.setError("Nhap Username");
                 if(passWord.isEmpty()) binding.txtPass.setError("Nhap password");
