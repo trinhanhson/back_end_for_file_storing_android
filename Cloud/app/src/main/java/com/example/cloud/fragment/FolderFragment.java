@@ -113,7 +113,8 @@ public class FolderFragment extends Fragment {
     }
 
     void taiFolder(Tep tep) {
-
+        MainActivity.folderPath+=tep.getDuongDan();
+        initRecycleView();
     }
 
     private void replaceFragmentOverlay(Fragment fragment) {

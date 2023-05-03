@@ -1,5 +1,7 @@
 package com.example.cloud.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -112,7 +114,7 @@ public class FileFragment extends Fragment {
                     // Lưu file vào thư mục tải về.
                     String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
 
-                    File file = new File(directory + "/hdv", "1681572511299.jpg");
+                    File file = new File(directory + "/hdv", tep.getTen());
                     InputStream inputStream = null;
                     OutputStream outputStream = null;
                     try {
@@ -147,7 +149,9 @@ public class FileFragment extends Fragment {
                     }
                     Log.e("ss", "2");
 
-                    
+                    moFile(file);
+
+
                 } else {
                     // Xử lý tải file không thành công.
                     Log.e("fall1", "3");
@@ -162,6 +166,16 @@ public class FileFragment extends Fragment {
             }
         });
 
-
     }
+
+    private void moFile(File file) {
+        Uri uri = Uri.fromFile(file);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        String mime = getActivity().getContentResolver().getType(uri);
+        intent.setDataAndType(uri, mime);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(intent);
+    }
+
+    ;
 }
