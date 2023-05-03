@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.cloud.R;
 import com.example.cloud.activity.MainActivity;
+import com.example.cloud.activity.RegisterActivity;
 import com.example.cloud.adapter.TepAdapter;
 import com.example.cloud.api.ApiCollection;
 import com.example.cloud.api.ApiSumoner;
@@ -45,6 +46,7 @@ public class FolderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentFolderBinding.inflate(inflater, container, false);
+        MainActivity.folderPath=RegisterActivity.user.getTenDangNhap();
 
         initRecycleView();
 

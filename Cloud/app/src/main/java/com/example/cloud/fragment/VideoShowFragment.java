@@ -1,5 +1,6 @@
 package com.example.cloud.fragment;
 
+import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cloud.activity.MainActivity;
 import com.example.cloud.databinding.FragmentVideoShowBinding;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.*;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -32,6 +35,7 @@ public class VideoShowFragment extends Fragment {
     private String videoUrl;
 
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,7 +48,6 @@ public class VideoShowFragment extends Fragment {
 
 
         btnBack.setOnClickListener(v -> {
-            exoPlayer.pause();
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(VideoShowFragment.this);
@@ -69,11 +72,14 @@ public class VideoShowFragment extends Fragment {
 
     private void playVideo(String videoUrl) {
         try{
-            exoPlayer = new ExoPlayer.Builder(getContext()).build();
+
+            exoPlayer = new ExoPlayer.Builder(requireActivity()).build();
             binding.plvExoPlayer.setPlayer(exoPlayer);
             MediaItem mediaItem = MediaItem.fromUri(videoUrl);
-            exoPlayer.setMediaItem(mediaItem);
-            exoPlayer.prepare();
+            MediaSource mediaSource = new ProgressiveMediaSource.Factory(
+                    new DefaultDataSourceFactory(getContext(), "MyApp")
+            ).createMediaSource(mediaItem);
+            exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(true);
 
         }catch(Exception e){

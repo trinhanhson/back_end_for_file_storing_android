@@ -227,4 +227,11 @@ public class TepController {
         response.setContentType(Files.probeContentType(file.toPath()));
         IOUtils.copy(inputStream, response.getOutputStream());
     }
+
+    @GetMapping("/getAllFile")
+    public ResponseEntity<?> getAllFile(@RequestParam("username") String username) {
+        List<Tep> listNameTep = tepRepo.findByNguoiDungOnLyFile(username);
+        return ResponseEntity.ok(listNameTep);
+
+    }
 }

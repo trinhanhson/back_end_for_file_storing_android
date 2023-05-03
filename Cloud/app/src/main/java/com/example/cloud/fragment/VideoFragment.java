@@ -40,7 +40,8 @@ public class VideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       binding = FragmentVideoBinding.inflate(inflater,container,false);
+        binding = FragmentVideoBinding.inflate(inflater, container, false);
+        MainActivity.folderPath = RegisterActivity.user.getTenDangNhap();
 
         initRecycleView();
 
@@ -48,6 +49,7 @@ public class VideoFragment extends Fragment {
     }
 
     private void initRecycleView() {
+
         recyclerView = binding.rcvDataVideo;
 
         listTep = new ArrayList<>();
@@ -58,7 +60,7 @@ public class VideoFragment extends Fragment {
 
         ApiCollection api = ApiSumoner.callApi();
 
-        Call<List<Tep>> call = api.downloadNameFileOfType(RegisterActivity.user.getTenDangNhap(),"video");
+        Call<List<Tep>> call = api.downloadNameFileOfType(RegisterActivity.user.getTenDangNhap(), "video");
 
         call.enqueue(new Callback<List<Tep>>() {
             @Override
@@ -84,13 +86,13 @@ public class VideoFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(tepAdapter!=null){
+        if (tepAdapter != null) {
             tepAdapter.release();
         }
     }
 
     void taiFile(Tep tep) {
-        MainActivity.tep=tep;
+        MainActivity.tep = tep;
         replaceFragmentOverlay(new VideoShowFragment());
     }
 

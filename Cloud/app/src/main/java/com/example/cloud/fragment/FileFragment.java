@@ -52,7 +52,7 @@ public class FileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentFileBinding.inflate(inflater, container, false);
-
+        MainActivity.folderPath=RegisterActivity.user.getTenDangNhap();
 
         initRecycleView();
 

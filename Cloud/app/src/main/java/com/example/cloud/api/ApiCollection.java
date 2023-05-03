@@ -52,4 +52,11 @@ public interface ApiCollection {
     Call<ResponseBody> deleteFile(@Field("fileName") String fileName,
                                   @Field("username") String username);
 
+    @FormUrlEncoded
+    @POST("uploadFolder")
+    Call<ResponseBody> uploadFolder(@Field("folder") String folder, @Field("path") String path);
+
+    @GET("getAllFile")
+    Call<List<Tep>> getAllFile(@Query("username") String username);
+
 }
