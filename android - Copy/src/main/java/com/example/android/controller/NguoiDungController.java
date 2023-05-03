@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -29,7 +30,7 @@ public class NguoiDungController {
     private TepRepo tepRepo;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam("nguoiDung") NguoiDung _nguoiDung) {
+    public ResponseEntity<?> login(@RequestBody NguoiDung _nguoiDung) {
 
         NguoiDung nguoiDung = nguoiDungRepo.findByTenDangNhapVaMatKhau(_nguoiDung.getTenDangNhap(), _nguoiDung.getMatKhau());
 
@@ -41,7 +42,7 @@ public class NguoiDungController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestParam("nguoiDung") NguoiDung _nguoiDung) {
+    public ResponseEntity<?> signup(@RequestBody NguoiDung _nguoiDung) {
 
         // Check if user with given username already exists in the database
         if (nguoiDungRepo.existsByTenDangNhap(_nguoiDung.getTenDangNhap())) {
