@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/lavender"
-    tools:context=".fragment.SearchFragment">
+    tools:context=".fragment.SearchFragment"
+    android:clickable="true">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgClear"
