@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static int tab;
 
+    public static boolean isSearch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -49,17 +49,21 @@ public class VideoShowFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding=FragmentVideoShowBinding.inflate(inflater, container, false);
+        binding = FragmentVideoShowBinding.inflate(inflater, container, false);
 
-        btnBack=binding.imgExit;
+        btnBack = binding.imgExit;
         btnBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.remove(VideoShowFragment.this);
+            if (MainActivity.isSearch) {
+                fragmentTransaction.replace(R.id.frame_layout_1,new SearchFragment());
+            } else {
+                fragmentTransaction.remove(VideoShowFragment.this);
+            }
             fragmentTransaction.commit();
         });
 
-        btnDelete=binding.trash;
+        btnDelete = binding.trash;
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,14 +100,14 @@ public class VideoShowFragment extends Fragment {
 
         // Đường dẫn tới video
 
-        String encodedVideoName="";
+        String encodedVideoName = "";
         try {
             encodedVideoName = URLEncoder.encode(MainActivity.tep.getDuongDan(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
-        videoUrl="http://192.168.55.107:8080/getFile?filePath=" + encodedVideoName;
+        videoUrl = "http://192.168.55.107:8080/getFile?filePath=" + encodedVideoName;
 
         playVideo(videoUrl);
 
@@ -111,7 +115,7 @@ public class VideoShowFragment extends Fragment {
     }
 
     private void playVideo(String videoUrl) {
-        try{
+        try {
 
             exoPlayer = new ExoPlayer.Builder(requireActivity()).build();
             binding.plvExoPlayer.setPlayer(exoPlayer);
@@ -121,7 +125,7 @@ public class VideoShowFragment extends Fragment {
             ).createMediaSource(mediaItem);
             exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(true);
-        }catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
@@ -137,10 +141,10 @@ public class VideoShowFragment extends Fragment {
         exoPlayer.pause();
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.remove(VideoShowFragment.this);
         fragmentTransaction.commit();
     }

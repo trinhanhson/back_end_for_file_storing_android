@@ -72,6 +72,8 @@ public class SearchFragment extends Fragment {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(binding.srvSearch.getWindowToken(), 0);
 
+            MainActivity.isSearch=false;
+
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(SearchFragment.this);
@@ -119,6 +121,8 @@ public class SearchFragment extends Fragment {
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.srvSearch.getWindowToken(), 0);
 
+                MainActivity.isSearch=true;
+
                 taiFile(tep);
             }
         });
@@ -135,9 +139,12 @@ public class SearchFragment extends Fragment {
             public void onResponse(Call<List<Tep>> call, Response<List<Tep>> response) {
                 listTep = response.body();
                 Log.e("t", listTep.size() + "");
-                tepAdapter = new TepAdapter(SearchFragment.this.getContext(), listTep, R.layout.file, new IOnClickItem() {
+                tepAdapter = new TepAdapter(SearchFragment.this.getContext(), listTep, R.layout.file_folder, new IOnClickItem() {
                     @Override
                     public void onClickItem(Tep tep) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(binding.srvSearch.getWindowToken(), 0);
+
                         taiTep(tep);
                     }
                 });

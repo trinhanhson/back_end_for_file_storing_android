@@ -49,7 +49,7 @@ public class FolderFragment extends Fragment {
 
     private List<Tep> listTep;
     private RecyclerView recyclerView;
-    public static TepAdapter tepAdapter;
+    public TepAdapter tepAdapter;
 
 
     @Override

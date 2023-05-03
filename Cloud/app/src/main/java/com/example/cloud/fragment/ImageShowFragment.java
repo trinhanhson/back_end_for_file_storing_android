@@ -50,7 +50,11 @@ public class ImageShowFragment extends Fragment {
         btnBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.remove(ImageShowFragment.this);
+            if (MainActivity.isSearch) {
+                fragmentTransaction.replace(R.id.frame_layout_1,new SearchFragment());
+            } else {
+                fragmentTransaction.remove(ImageShowFragment.this);
+            }
             fragmentTransaction.commit();
         });
 
