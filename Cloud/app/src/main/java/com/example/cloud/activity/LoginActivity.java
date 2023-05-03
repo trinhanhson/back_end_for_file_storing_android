@@ -45,11 +45,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 ApiCollection api= ApiSumoner.callApi();
 
-                user =new NguoiDung();
-                user.setTenDangNhap(userName);
-                user.setMatKhau(passWord);
+                NguoiDung user1 =new NguoiDung();
+                user1.setTenDangNhap(userName);
+                user1.setMatKhau(passWord);
 
-                Call<NguoiDung> call=api.login(user);
+                Call<NguoiDung> call=api.login(user1);
 
                 call.enqueue(new Callback<NguoiDung>() {
                     @Override

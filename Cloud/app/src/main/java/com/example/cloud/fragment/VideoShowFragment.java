@@ -24,12 +24,13 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Objects;
 
 public class VideoShowFragment extends Fragment {
 
     private FragmentVideoShowBinding binding;
 
-    private AppCompatImageView btnBack,btnDelete;
+    private AppCompatImageView btnBack;
 
     private ExoPlayer exoPlayer;
     private String videoUrl;
@@ -42,11 +43,6 @@ public class VideoShowFragment extends Fragment {
         binding=FragmentVideoShowBinding.inflate(inflater, container, false);
 
         btnBack=binding.imgExit;
-
-        btnDelete=binding.trash;
-
-
-
         btnBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -81,9 +77,7 @@ public class VideoShowFragment extends Fragment {
             ).createMediaSource(mediaItem);
             exoPlayer.prepare(mediaSource);
             exoPlayer.setPlayWhenReady(true);
-
         }catch(Exception e){
-
         }
     }
 
@@ -93,4 +87,9 @@ public class VideoShowFragment extends Fragment {
         exoPlayer.pause();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        exoPlayer.pause();
+    }
 }
