@@ -12,6 +12,9 @@ public class Tep {
     @SerializedName("duong_dan")
     private String duongDan;
 
+    @SerializedName("duong_dan_cha")
+    private String duongDanCha;
+
     @SerializedName("loai")
     private String loai;
 
@@ -21,12 +24,13 @@ public class Tep {
     public Tep() {
     }
 
-    public Tep(int id, String ten, String duongDan, String loai, String nguoiDung) {
+    public Tep(int id, String ten, String duongDan, String duongDanCha, String loai, String nguoiDung) {
         this.id = id;
         this.ten = ten;
         this.duongDan = duongDan;
         this.loai = loai;
         this.nguoiDung = nguoiDung;
+        this.duongDanCha=duongDanCha;
     }
 
     public int getId() {

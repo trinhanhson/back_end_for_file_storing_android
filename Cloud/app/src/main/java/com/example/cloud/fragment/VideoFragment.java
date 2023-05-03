@@ -54,11 +54,6 @@ public class VideoFragment extends Fragment {
     }
 
     private void createTepList() {
-        listTep.add(new Tep(1, "abv", "anhson/abv.png", "video", "anhson"));
-        listTep.add(new Tep(1, "abv", "anhson/abv.png", "video", "anhson"));
-        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
-        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
-        listTep.add(new Tep(1, "abv", "anhson/abv.png", "image", "anhson"));
     }
 
     @Override
