@@ -8,14 +8,21 @@ import android.text.TextWatcher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.cloud.api.ApiCollection;
+import com.example.cloud.api.ApiSumoner;
 import com.example.cloud.databinding.ActivityRegisterBinding;
 import com.example.cloud.model.NguoiDung;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     ActivityRegisterBinding binding;
     private String username, pass, reTimePass;
     public static NguoiDung user;
     private Intent intent;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,11 +87,31 @@ public class RegisterActivity extends AppCompatActivity {
             NguoiDung user = new NguoiDung();
             user.setTenDangNhap(username);
             user.setMatKhau(pass);
+            saveUse(user);
             intent = new Intent(this,LoginActivity.class);
             startActivity(intent);
             finish();
         });
 
+    }
+
+    private void saveUse(NguoiDung user) {
+
+        ApiCollection api= ApiSumoner.callApi();
+
+        Call<NguoiDung> call=api.signup(user);
+
+        call.enqueue(new Callback<NguoiDung>() {
+            @Override
+            public void onResponse(Call<NguoiDung> call, Response<NguoiDung> response) {
+                
+            }
+
+            @Override
+            public void onFailure(Call<NguoiDung> call, Throwable t) {
+
+            }
+        });
     }
 
     private boolean checkReTimePass() {
