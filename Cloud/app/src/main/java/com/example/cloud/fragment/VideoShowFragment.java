@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cloud.activity.MainActivity;
 import com.example.cloud.databinding.FragmentVideoShowBinding;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -26,9 +28,9 @@ public class VideoShowFragment extends Fragment {
 
     private AppCompatImageView btnBack,btnDelete;
 
-    private VideoView videoView;
+    private ExoPlayer exoPlayer;
+    private String videoUrl;
 
-    private MediaController mMediaController;
 
     @Nullable
     @Override
@@ -39,7 +41,7 @@ public class VideoShowFragment extends Fragment {
 
         btnDelete=binding.trash;
 
-        videoView=binding.videoView;
+
 
         btnBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -47,8 +49,6 @@ public class VideoShowFragment extends Fragment {
             fragmentTransaction.remove(VideoShowFragment.this);
             fragmentTransaction.commit();
         });
-
-        mMediaController = new MediaController(this.getContext());
 
         // Đường dẫn tới video
 
@@ -59,18 +59,25 @@ public class VideoShowFragment extends Fragment {
             e.printStackTrace();
         }
 
-        String videoUrl="http://192.168.0.183:8080/getFile?filePath=" + encodedVideoName;
+        videoUrl="http://192.168.0.183:8080/getFile?filePath=" + encodedVideoName;
 
-        // Thiết lập MediaController cho VideoView
-        mMediaController.setAnchorView(videoView);
-        videoView.setMediaController(mMediaController);
-
-        // Đưa đường dẫn tới video vào VideoView để phát
-        videoView.setVideoPath(videoUrl);
-
-        // Bắt đầu phát video
-        videoView.start();
+        playVideo(videoUrl);
 
         return binding.getRoot();
     }
+
+    private void playVideo(String videoUrl) {
+        try{
+            exoPlayer = new ExoPlayer.Builder(getContext()).build();
+            binding.plvExoPlayer.setPlayer(exoPlayer);
+            MediaItem mediaItem = MediaItem.fromUri(videoUrl);
+            exoPlayer.setMediaItem(mediaItem);
+            exoPlayer.prepare();
+            exoPlayer.setPlayWhenReady(true);
+
+        }catch(Exception e){
+
+        }
+    }
+
 }
