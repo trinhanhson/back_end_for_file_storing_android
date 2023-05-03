@@ -104,7 +104,7 @@ public class RegisterActivity extends AppCompatActivity {
         call.enqueue(new Callback<NguoiDung>() {
             @Override
             public void onResponse(Call<NguoiDung> call, Response<NguoiDung> response) {
-                
+
             }
 
             @Override
