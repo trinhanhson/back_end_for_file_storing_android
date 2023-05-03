@@ -48,6 +48,7 @@ public class VideoShowFragment extends Fragment {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.remove(VideoShowFragment.this);
             fragmentTransaction.commit();
+            exoPlayer.pause();
         });
 
         // Đường dẫn tới video
@@ -78,6 +79,12 @@ public class VideoShowFragment extends Fragment {
         }catch(Exception e){
 
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        exoPlayer.pause();
     }
 
 }
