@@ -13,24 +13,29 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
+import com.example.cloud.activity.MainActivity;
 import com.example.cloud.databinding.FragmentImageShowBinding;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class ImageShowFragment extends Fragment {
 
     private FragmentImageShowBinding binding;
 
-    private AppCompatImageView btnBack,btnDelete;
+    private AppCompatImageView btnBack, btnDelete;
 
     private ImageView imageView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding=FragmentImageShowBinding.inflate(inflater, container, false);
+        binding = FragmentImageShowBinding.inflate(inflater, container, false);
 
-        btnBack=binding.imgExit;
+        btnBack = binding.imgExit;
 
-        btnDelete=binding.trash;
+        btnDelete = binding.trash;
 
         btnBack.setOnClickListener(v -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -39,7 +44,14 @@ public class ImageShowFragment extends Fragment {
             fragmentTransaction.commit();
         });
 
+        String encodedImageName = "";
+        try {
+            encodedImageName = URLEncoder.encode(MainActivity.tep.getDuongDan(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
+        Glide.with(this.getContext()).load("http://192.168.0.183:8080/getFile?filePath=" + encodedImageName).into(imageView);
 
         return binding.getRoot();
     }

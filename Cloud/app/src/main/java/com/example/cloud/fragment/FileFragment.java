@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,9 +25,15 @@ import com.example.cloud.databinding.FragmentFolderBinding;
 import com.example.cloud.model.Tep;
 import com.example.cloud.onclick.IOnClickItem;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +49,7 @@ public class FileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentFileBinding.inflate(inflater,container,false);
+        binding = FragmentFileBinding.inflate(inflater, container, false);
 
 
         initRecycleView();
@@ -61,7 +68,7 @@ public class FileFragment extends Fragment {
 
         ApiCollection api = ApiSumoner.callApi();
 
-        Call<List<Tep>> call = api.downloadNameFileOfType(RegisterActivity.user.getTenDangNhap(),"khac");
+        Call<List<Tep>> call = api.downloadNameFileOfType(RegisterActivity.user.getTenDangNhap(), "khac");
 
         call.enqueue(new Callback<List<Tep>>() {
             @Override
@@ -87,20 +94,74 @@ public class FileFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(tepAdapter!=null){
+        if (tepAdapter != null) {
             tepAdapter.release();
         }
     }
 
     void taiFile(Tep tep) {
-        MainActivity.tep=tep;
-        replaceFragmentOverlay(new ImageShowFragment());
-    }
+        ApiCollection api = ApiSumoner.callApi();
 
-    private void replaceFragmentOverlay(Fragment fragment) {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout_1, fragment);
-        fragmentTransaction.commit();
+        Call<ResponseBody> call = api.downloadOneFile(tep.getDuongDan());
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    // Lấy đường dẫn thư mục trên thiết bị để lưu file tải về
+                    // Lưu file vào thư mục tải về.
+                    String directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+
+                    File file = new File(directory + "/hdv", "1681572511299.jpg");
+                    InputStream inputStream = null;
+                    OutputStream outputStream = null;
+                    try {
+                        byte[] fileReader = new byte[4096];
+                        inputStream = response.body().byteStream();
+                        outputStream = new FileOutputStream(file);
+                        while (true) {
+                            int read = inputStream.read(fileReader);
+                            if (read == -1) {
+                                break;
+                            }
+                            outputStream.write(fileReader, 0, read);
+                        }
+                        outputStream.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (inputStream != null) {
+                            try {
+                                inputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if (outputStream != null) {
+                            try {
+                                outputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    Log.e("ss", "2");
+
+                    
+                } else {
+                    // Xử lý tải file không thành công.
+                    Log.e("fall1", "3");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // Xử lý lỗi tải file.
+                Log.e("fall", t.getMessage());
+            }
+        });
+
+
     }
 }

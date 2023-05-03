@@ -38,8 +38,7 @@ public interface ApiCollection {
     );
 
     @GET("downloadOneFile")
-    Call<ResponseBody> downloadOneFile(@Query("fileName") String filename,
-                                       @Query("username") String username);
+    Call<ResponseBody> downloadOneFile(@Query("path") String path);
 
     @GET("downloadNameAll")
     Call<List<Tep>> downloadNameAll(@Query("path") String path);
