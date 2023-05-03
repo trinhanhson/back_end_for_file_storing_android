@@ -3,6 +3,8 @@ package com.example.cloud.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,7 +61,7 @@ public class ImageFragment extends Fragment {
 
         ApiCollection api = ApiSumoner.callApi();
 
-        Call<List<Tep>> call = api.downloadNameFileOfType(RegisterActivity.user.getTenDangNhap(),"image");
+        Call<List<Tep>> call = api.downloadNameFileOfType(RegisterActivity.user.getTenDangNhap(), "image");
 
         call.enqueue(new Callback<List<Tep>>() {
             @Override
@@ -90,6 +92,15 @@ public class ImageFragment extends Fragment {
         }
     }
 
-    private void taiFile(Tep tep) {
+    void taiFile(Tep tep) {
+        MainActivity.tep = tep;
+        replaceFragmentOverlay(new ImageShowFragment());
+    }
+
+    private void replaceFragmentOverlay(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout_1, fragment);
+        fragmentTransaction.commit();
     }
 }
