@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
@@ -170,14 +172,18 @@ public class TepController {
     }
 
     @GetMapping("/downloadOneFile")
-    public ResponseEntity<?> downloadOneFile(@RequestParam("path") String path) {
+    public ResponseEntity<?> downloadOneFile(@RequestParam("path") String path) throws UnsupportedEncodingException {
         File file = new File(parentPath + path);
 
         Resource resource = new FileSystemResource(file);
+        String aString=URLEncoder.encode(file.getName(), "UTF-8");
 
         // Trả về đối tượng ResponseEntity chứa tệp tin và các đầu mục HTTP cần thiết
-        return ResponseEntity.ok()
-                .body(resource);
+            return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +aString + "\"")
+            .contentLength(file.length())
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(resource);
     }
 
     @PostMapping("/deleteFile")
