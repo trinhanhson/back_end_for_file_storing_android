@@ -1,7 +1,9 @@
 package com.example.cloud.fragment;
 
+import android.content.Intent;
 import android.media.browse.MediaBrowser;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cloud.R;
+import com.example.cloud.activity.LoginSelectActivity;
 import com.example.cloud.activity.MainActivity;
+import com.example.cloud.activity.SplashActivity;
 import com.example.cloud.api.ApiCollection;
 import com.example.cloud.api.ApiSumoner;
 import com.example.cloud.databinding.FragmentVideoShowBinding;
@@ -56,7 +60,7 @@ public class VideoShowFragment extends Fragment {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (MainActivity.isSearch) {
-                fragmentTransaction.replace(R.id.frame_layout_1,new SearchFragment());
+                fragmentTransaction.replace(R.id.frame_layout_1, new SearchFragment());
             } else {
                 fragmentTransaction.remove(VideoShowFragment.this);
             }
@@ -68,6 +72,10 @@ public class VideoShowFragment extends Fragment {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                exoPlayer.release();
+
+                MainActivity.deletedFilePath=MainActivity.tep.getDuongDan();
+
                 ApiCollection api = ApiSumoner.callApi();
 
                 Call<ResponseBody> call = api.deleteFile(MainActivity.tep.getDuongDan());
@@ -132,7 +140,7 @@ public class VideoShowFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        exoPlayer.pause();
+        exoPlayer.release();
     }
 
     @Override

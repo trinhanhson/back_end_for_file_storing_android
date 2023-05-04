@@ -18,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StreamUtils;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Map;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
@@ -29,7 +30,7 @@ public class FileMaker {
 
     @Autowired
     private TepRepo tepRepo;
-    
+
     static private String parentPath = "D:/back_end_for_file_storing_android/android - Copy/user/";
 
     public static boolean MakeFolder(String path, String name) {
@@ -65,7 +66,8 @@ public class FileMaker {
             return false;
         }
 
-        FileUtils.forceDelete(file);
+//        FileUtils.forceDelete(file);
+        Files.deleteIfExists(file.toPath());
 
         return true;
     }

@@ -7,10 +7,12 @@ package com.example.android.controller;
 import com.example.android.Repository.TepRepo;
 import com.example.android.model.Tep;
 import com.example.android.utility.FileMaker;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +44,10 @@ public class TepController {
     private TepRepo tepRepo;
 
     private String parentPath = "D:/back_end_for_file_storing_android/android - Copy/user/";
+
+    private FileInputStream inputStream;
+
+    private boolean isDelete = false;
 
     @PostMapping("/uploadFile")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("path") String path) throws IOException {
@@ -177,11 +183,17 @@ public class TepController {
     @PostMapping("/deleteFile")
     public ResponseEntity<?> deleteFile(@RequestParam("path") String path) throws IOException {
 
+        if (tepRepo.findByDuongDan(path) == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
         if (!FileMaker.DeleteFile(parentPath + path)) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
         tepRepo.deleteByDuongDan(path);
+
+        isDelete = true;
 
         return ResponseEntity.ok("Xoa file thanh cong");
     }
@@ -218,10 +230,28 @@ public class TepController {
 //    }
     @GetMapping("/getFile")
     public void getFile(HttpServletResponse response, @RequestParam("filePath") String filePath) throws IOException {
+
+        isDelete = false;
         File file = new File(parentPath + filePath);
-        FileInputStream inputStream = new FileInputStream(file);
+        InputStream inputStream = new FileInputStream(file);
         response.setContentType(Files.probeContentType(file.toPath()));
-        IOUtils.copy(inputStream, response.getOutputStream());
+
+        ServletOutputStream outputStream = response.getOutputStream();
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        try {
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+                outputStream.flush();
+                if (isDelete) {
+                    inputStream.close();
+                    return;
+                }
+            }
+        } finally {
+            outputStream.close();
+            inputStream.close();
+        }
     }
 
     @GetMapping("/getAllFile")

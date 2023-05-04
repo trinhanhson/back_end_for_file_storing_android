@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton btnAdd;
 
-    public static String folderPath;
+    public static String folderPath, deletedFilePath = null;
 
     public static Tep tep;
 
@@ -45,10 +45,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        tab=R.id.folder;
         replaceFragment(new FolderFragment());
         binding.bottomNavigationView.setBackground(null);
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            tab=item.getItemId();
+            tab = item.getItemId();
             switch (item.getItemId()) {
                 case R.id.folder:
                     replaceFragment(new FolderFragment());
@@ -74,11 +75,11 @@ public class MainActivity extends AppCompatActivity {
 
         btnSearch.setOnClickListener(v -> replaceFragmentOverlay(new SearchFragment()));
 
-        btnAdd=findViewById(R.id.add);
+        btnAdd = findViewById(R.id.add);
 
         btnAdd.setOnClickListener(v -> replaceFragmentOverlay(new ChoseUploadFragment()));
 
-        folderPath=RegisterActivity.user.getTenDangNhap();
+        folderPath = RegisterActivity.user.getTenDangNhap();
     }
 
     private void replaceFragment(Fragment fragment) {

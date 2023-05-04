@@ -65,6 +65,8 @@ public class ImageShowFragment extends Fragment {
             public void onClick(View v) {
                 ApiCollection api = ApiSumoner.callApi();
 
+                MainActivity.deletedFilePath=MainActivity.tep.getDuongDan();
+
                 Call<ResponseBody> call = api.deleteFile(MainActivity.tep.getDuongDan());
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override

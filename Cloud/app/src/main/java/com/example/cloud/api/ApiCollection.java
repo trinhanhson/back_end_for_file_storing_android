@@ -58,4 +58,7 @@ public interface ApiCollection {
     @GET("getAllFile")
     Call<List<Tep>> getAllFile(@Query("username") String username);
 
+    @FormUrlEncoded
+    @POST("deleteUser")
+    Call<ResponseBody> deleteUser(@Field("username") String username);
 }

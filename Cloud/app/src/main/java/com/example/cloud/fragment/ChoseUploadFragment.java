@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.cloud.R;
 import com.example.cloud.activity.MainActivity;
@@ -48,7 +49,7 @@ public class ChoseUploadFragment extends Fragment {
 
     private FragmentChoseUploadBinding binding;
 
-    private AppCompatImageView btnBack;
+    private ImageView btnBack;
 
     private Button btnAddMedia, btnAddFile, btnAddFolder, btnTao, btnHuy;
 
@@ -94,7 +95,7 @@ public class ChoseUploadFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("video/*,image/*");
+                intent.setType("image/* video/*");
                 startActivityForResult(intent, PICKFILE_REQUEST_CODE);
             }
         });
